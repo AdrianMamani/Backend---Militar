@@ -9,13 +9,6 @@ CREATE TABLE Usuario (
     rol VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB;
 
--- Tabla: Galeria
-CREATE TABLE Galeria (
-    id_galeria INT AUTO_INCREMENT PRIMARY KEY,
-    tipo_archivo VARCHAR(50),
-    ruta_archivo VARCHAR(255),
-    informacion TEXT
-) ENGINE=InnoDB;
 
 -- Tabla: Contacto
 CREATE TABLE Contacto (
@@ -28,7 +21,6 @@ CREATE TABLE Contacto (
 -- Tabla: Promoción
 CREATE TABLE Promocion (
     id_promocion INT AUTO_INCREMENT PRIMARY KEY,
-    id_galeria INT,
     nombre_promocion VARCHAR(100),
     fecha_creacion DATE,
     resolucion_creacion VARCHAR(100),
@@ -37,8 +29,7 @@ CREATE TABLE Promocion (
     descripcion TEXT,
     mision TEXT,
     vision TEXT,
-    resenia TEXT,
-    FOREIGN KEY (id_galeria) REFERENCES Galeria(id_galeria) ON DELETE SET NULL
+    resenia TEXT
 ) ENGINE=InnoDB;
 
 -- Tabla: Especialidad
@@ -58,10 +49,9 @@ CREATE TABLE Logro (
 -- Tabla: Miembro
 CREATE TABLE Miembro (
     id_miembro INT AUTO_INCREMENT PRIMARY KEY,
-    id_promocion INT,
-    id_especialidad INT,
+    id_promocion INT ,
+    id_especialidad INT ,
     id_contacto INT,
-    id_galeria INT,
     id_usuario INT,
     nombres VARCHAR(100),
     fecha_nac DATE,
@@ -71,8 +61,27 @@ CREATE TABLE Miembro (
     FOREIGN KEY (id_promocion) REFERENCES Promocion(id_promocion) ON DELETE SET NULL,
     FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad) ON DELETE SET NULL,
     FOREIGN KEY (id_contacto) REFERENCES Contacto(id_contacto) ON DELETE SET NULL,
-    FOREIGN KEY (id_galeria) REFERENCES Galeria(id_galeria) ON DELETE SET NULL,
     FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+
+
+-- Tabla: Evento
+CREATE TABLE Evento (
+    id_evento INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_evento VARCHAR(100),
+    lugar_evento VARCHAR(60),
+    fecha_evento DATE,
+    descripcion TEXT,
+    confirmacion_asistencia BOOLEAN
+) ENGINE=InnoDB;
+
+CREATE TABLE Evento_Miembro (
+    id_evento INT,
+    id_miembro INT,
+    PRIMARY KEY (id_evento, id_miembro),
+    FOREIGN KEY (id_evento) REFERENCES Evento(id_evento) ON DELETE CASCADE,
+    FOREIGN KEY (id_miembro) REFERENCES Miembro(id_miembro) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Tabla: Persona
@@ -82,33 +91,31 @@ CREATE TABLE Persona (
     contacto VARCHAR(12)
 ) ENGINE=InnoDB;
 
--- Tabla: Evento
-CREATE TABLE Evento (
-    id_evento INT AUTO_INCREMENT PRIMARY KEY,
-    id_miembro INT,
+CREATE TABLE Evento_Persona (
+    id_evento INT,
     id_persona INT,
-    id_galeria INT,
-    nombre_evento VARCHAR(100),
-    lugar_evento VARCHAR(60),
-    fecha_evento DATE,
-    descripcion TEXT,
-    confirmacion_asistencia BOOLEAN,
-    FOREIGN KEY (id_miembro) REFERENCES Miembro(id_miembro) ON DELETE CASCADE,
-    FOREIGN KEY (id_persona) REFERENCES Persona(id_personas) ON DELETE SET NULL,
-    FOREIGN KEY (id_galeria) REFERENCES Galeria(id_galeria) ON DELETE SET NULL
+    PRIMARY KEY (id_evento, id_persona),
+    FOREIGN KEY (id_evento) REFERENCES Evento(id_evento) ON DELETE CASCADE,
+    FOREIGN KEY (id_persona) REFERENCES Persona(id_personas) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- Tabla: Noticia
 CREATE TABLE Noticia (
     id_noticia INT AUTO_INCREMENT PRIMARY KEY,
-    id_persona INT,
-    id_galeria INT,
     titulo VARCHAR(100),
     descripcion TEXT,
-    fecha_publicacion DATE,
-    FOREIGN KEY (id_persona) REFERENCES Persona(id_personas) ON DELETE SET NULL,
-    FOREIGN KEY (id_galeria) REFERENCES Galeria(id_galeria) ON DELETE SET NULL
+    fecha_publicacion DATE
 ) ENGINE=InnoDB;
+
+-- Tabla: Noticia_Personas
+CREATE TABLE Noticia_Persona (
+    id_noticia INT,
+    id_persona INT,
+    PRIMARY KEY (id_noticia, id_persona),
+    FOREIGN KEY (id_noticia) REFERENCES Noticia(id_noticia) ON DELETE CASCADE,
+    FOREIGN KEY (id_persona) REFERENCES Persona(id_personas) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 
 -- Tabla: InMemoriam
 CREATE TABLE InMemoriam (
@@ -118,6 +125,25 @@ CREATE TABLE InMemoriam (
     descripcion TEXT,
     FOREIGN KEY (id_miembro) REFERENCES Miembro(id_miembro) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+
+-- Tabla: Galeria
+CREATE TABLE Galeria (
+    id_galeria INT AUTO_INCREMENT PRIMARY KEY,
+    id_promocion INT DEFAULT NULL,
+    id_miembro INT DEFAULT NULL,
+    id_noticia INT DEFAULT NULL,
+    id_evento INT DEFAULT NULL,
+    tipo_archivo VARCHAR(50),
+    ruta_archivo VARCHAR(255),
+    informacion TEXT,
+    FOREIGN KEY (id_promocion) REFERENCES Promocion(id_promocion) ON DELETE SET NULL,
+    FOREIGN KEY (id_miembro) REFERENCES Miembro(id_miembro) ON DELETE SET NULL,
+	FOREIGN KEY (id_noticia) REFERENCES Noticia(id_noticia) ON DELETE SET NULL,
+    FOREIGN KEY (id_evento) REFERENCES Evento(id_evento) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+
 
 -- Tabla: Miembros_Logros 
 CREATE TABLE Miembros_Logros (
@@ -139,6 +165,7 @@ CREATE TABLE Comentarios (
     nombre_completo VARCHAR(80),
     FOREIGN KEY (id_galeria) REFERENCES Galeria(id_galeria) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
 
 -- Tabla: Categoria
 CREATE TABLE Categoria (
@@ -207,8 +234,5 @@ CREATE TABLE Pago (
     FOREIGN KEY (id_aportacion) REFERENCES Aportacion(id_aportacion) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-
 --
 SHOW TABLES;
-
-
