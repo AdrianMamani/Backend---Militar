@@ -1,21 +1,25 @@
 <?php
 require_once __DIR__ . "/../model/User.php";
 
-class UserController {
+class UserController
+{
     private $userModel;
 
-    public function __construct(Database $db) {
+    public function __construct(Database $db)
+    {
         $this->userModel = new UserModel($db);
     }
 
     // Obtener todos los usuarios
-    public function getAll() {
+    public function getAll()
+    {
         $users = $this->userModel->getAll();
         Response::json($users);
     }
 
     // Obtener un usuario 
-    public function getById($id) {
+    public function getById($id)
+    {
         $user = $this->userModel->getById($id);
         if ($user) {
             Response::json($user);
@@ -25,7 +29,8 @@ class UserController {
     }
 
     // Crear un nuevo usuario (Esto no se Usara, solo para pruebas)
-    public function create() {
+    public function create()
+    {
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data['username'], $data['rol'], $data['password'])) {
@@ -33,7 +38,7 @@ class UserController {
             return;
         }
 
-        $result = $this->userModel->create($data['username'], $data['password'],$data['rol']);
+        $result = $this->userModel->create($data['username'], $data['password'], $data['rol']);
 
         if ($result) {
             Response::json(['message' => 'Usuario creado exitosamente']);
@@ -43,7 +48,8 @@ class UserController {
     }
 
     // Actualizar usuario
-    public function update($id) {
+    public function update($id)
+    {
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data['username'], $data['email'])) {
@@ -61,7 +67,8 @@ class UserController {
     }
 
     // Eliminar usuario
-    public function delete($id) {
+    public function delete($id)
+    {
         $result = $this->userModel->delete($id);
 
         if ($result) {
@@ -72,7 +79,8 @@ class UserController {
     }
 
     // Login
-    public function login() {
+    public function login()
+    {
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data['username'], $data['password'])) {
@@ -91,14 +99,14 @@ class UserController {
     }
 
     // Registro
-    public function register() {
+    public function register()
+    {
         $this->create();
     }
 
     // Logout (solo informativo, no se maneja sesiones aquí)
-    public function logout() {
+    public function logout()
+    {
         Response::json(['message' => 'Logout exitoso']);
     }
 }
-
-?>

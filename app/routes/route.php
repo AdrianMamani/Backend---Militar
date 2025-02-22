@@ -23,5 +23,3 @@ $router->addRoute('GET', '/users/:id', [$userController, 'getById']);
 $router->addRoute('POST', '/users', [$userController, 'create']);
 $router->addRoute('PUT', '/users/:id', [$userController, 'update']);
 $router->addRoute('DELETE', '/users/:id', [$userController, 'delete']);
-
-?>
