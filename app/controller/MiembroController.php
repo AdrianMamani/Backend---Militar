@@ -13,6 +13,13 @@ class MiembroController
         $this->contactoModel = new Contacto($db);
     }
 
+    public function totalCountMiembro($estado)
+    {
+        $result = $this->miembroModel->countMiembro($estado);
+        Response::json(["Total de Miembros" => $result]);
+    }
+
+
     public function listAll()
     {
         $miembros = $this->miembroModel->getData();
@@ -59,7 +66,7 @@ class MiembroController
         }
 
         $this->miembroModel->putData($id, $idContacto, $data["nombres"], $data["cargo"], $data["descripcion"]);
-        $resultContacto = $this->contactoModel->putData($idContacto, $data["id_contacto"]["numero"], $data["id_contacto"]["correo"], $data["id_contacto"]["lugar"]);
+        $resultContacto = $this->contactoModel->update($idContacto, $data["id_contacto"]["numero"], $data["id_contacto"]["correo"], $data["id_contacto"]["lugar"]);
 
         if (!$resultContacto) {
             Response::json(["Error" => "No se pudo eliminar el registro con ID $idContacto"]);

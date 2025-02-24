@@ -9,6 +9,29 @@ class Miembro
         $this->db = $db->getConexion();
     }
 
+    public function countMiembro($estado)
+    {
+        $query = "SELECT COUNT(id_miembro) 'Total'  FROM miembro WHERE estado = ?;";
+        $stm = $this->db->prepare($query);
+
+        if (!$stm) {
+            error_log("Hubo un Error al Preparar la Consulta " . $this->db->error);
+            return false;
+        }
+
+        $stm->bind_param('s', $estado);
+        $stm->execute();
+        $result = $stm->get_result();
+        if (!$result && $stm->num_rows() === 0) {
+            error_log("No se Encontraron registros con el estado $estado " . $stm->error);
+            return null;
+        }
+        $result->free();
+        $stm->close();
+
+        return $result->fetch_assoc();
+    }
+
     public function getData()
     {
         $query = "CALL listMiembros();";

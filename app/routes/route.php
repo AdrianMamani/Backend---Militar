@@ -60,6 +60,7 @@ $router->addRoute('DELETE', '/users/:id', [$userController, 'delete']);
 
 
 // Ruta de Miembros
+$router->addRoute('GET', '/miembros/:estado', [$miembroController, 'totalCountMiembro']);
 $router->addRoute('GET', '/miembros', [$miembroController, 'listAll']);
 $router->addRoute('GET', '/miembros/:id', [$miembroController, 'getById']);
 $router->addRoute('PUT', '/miembros/:id', [$miembroController, 'updateById']);
