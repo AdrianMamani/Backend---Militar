@@ -27,18 +27,17 @@ $db = new Database();
 
 // Instancia del controlador con la base de datos
 
-$userController = new UserController(new Database());
-$miembroController = new MiembroController(new Database());
-$logroController = new LogroController(new Database());
-$contactoController = new ContactoController(new Database());
-$personaController = new PersonaController(new Database());
-$eventoPersonaController = new EventoPersonaController(new Database());
-$eventoController = new EventoController(new Database());
-$eventoMiembroController = new EventoMiembroController(new Database());
-$noticiaController = new NoticiaController(new Database());
-$noticiaPersonaController = new NoticiaPersonaController(new Database());
-$miembrosLogrosController = new MiembrosLogrosController(new Database());
-// Rutas de autenticación
+$userController = new UserController($db);
+$miembroController = new MiembroController($db);
+$logroController = new LogroController($db);
+$contactoController = new ContactoController($db);
+$personaController = new PersonaController($db);
+$eventoPersonaController = new EventoPersonaController($db);
+$eventoController = new EventoController($db);
+$eventoMiembroController = new EventoMiembroController($db);
+$noticiaController = new NoticiaController($db);
+$noticiaPersonaController = new NoticiaPersonaController($db);
+$miembrosLogrosController = new MiembrosLogrosController($db);
 $userController = new UserController($db);
 
 // -----------------------
@@ -74,9 +73,11 @@ $router->addRoute('DELETE', '/logros/:id', [$logroController, 'deleteById']);
 
 
 // Ruta de Contactos
+$router->addRoute('GET', '/contacto', [$contactoController, 'listContactos']);
 $router->addRoute('GET', '/contacto/:id', [$contactoController, 'getById']);
 $router->addRoute('POST', '/contacto', [$contactoController, 'createContacto']);
 $router->addRoute('PUT', '/contacto/:id', [$contactoController, 'update']);
+$router->addRoute('DELETE', '/contacto/:id', [$contactoController, 'deleteById']);
 
 // Ruta de Personas
 $router->addRoute('GET', '/persona', [$personaController, 'listPersonas']);
