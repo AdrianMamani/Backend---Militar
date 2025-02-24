@@ -11,7 +11,7 @@ class Miembro
 
     public function getData()
     {
-        $query = "CALL listMiembros();";
+        $query = "CALL listMiembrosActivos();";
         $stm = $this->db->query($query);
 
         if (!$stm) {

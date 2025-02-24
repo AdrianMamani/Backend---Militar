@@ -341,6 +341,41 @@ INSERT INTO noticia_persona (id_noticia, id_persona) VALUES (2,4);
 INSERT INTO noticia_persona (id_noticia, id_persona) VALUES (2,5);
 
 # PROCEDIMIENTOS ALMACENADOS 
+
+# LISTAR TODOS LOS MIEMBROS VIVOS CON SUS CONTACTOS , LOGROS E IMAGENES 
+DELIMITER $$
+CREATE PROCEDURE listMiembrosActivos()
+BEGIN
+SELECT 
+    m.id_miembro,
+    m.nombres,
+    m.cargo,
+    m.descripcion,
+    c.num_contacto,
+    c.correo,
+    c.lugar,
+    (
+        SELECT GROUP_CONCAT(l.titulo SEPARATOR ' , ')
+        FROM miembros_logros ml
+        INNER JOIN logro l ON ml.id_logro = l.id_logro
+        WHERE ml.id_miembro = m.id_miembro
+    ) AS logros,
+    (
+        SELECT GROUP_CONCAT(g.ruta_archivo SEPARATOR ' , ')
+        FROM galeria g
+        WHERE g.id_miembro = m.id_miembro
+    ) AS ruta_imagenes
+FROM 
+    miembro m
+INNER JOIN 
+    contacto c ON m.id_contacto = c.id_contacto
+WHERE m.estado = "ACTIVO"
+GROUP BY 
+    m.id_miembro, m.nombres, m.cargo, m.descripcion, c.num_contacto, c.correo, c.lugar;
+END $$
+DELIMITER 
+
+
 # LISTAR TODOS LOS MIEMBROS CON SUS CONTACTOS , LOGROS E IMAGENES 
 CREATE PROCEDURE listMiembros()
 SELECT 
