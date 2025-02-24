@@ -208,6 +208,7 @@ CREATE TABLE Aportacion (
     monto_oct DECIMAL(10, 2),
     monto_nov DECIMAL(10, 2),
     monto_dic DECIMAL(10, 2),
+    lugar VARCHAR(50),
     total DECIMAL(10, 2),
     fecha_creacion DATE,
     fecha_modificacion DATE,
