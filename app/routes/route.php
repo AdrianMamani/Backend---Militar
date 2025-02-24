@@ -73,9 +73,11 @@ $router->addRoute('DELETE', '/logros/:id', [$logroController, 'deleteById']);
 
 
 // Ruta de Contactos
+$router->addRoute('GET', '/contacto', [$contactoController, 'listContactos']);
 $router->addRoute('GET', '/contacto/:id', [$contactoController, 'getById']);
 $router->addRoute('POST', '/contacto', [$contactoController, 'createContacto']);
 $router->addRoute('PUT', '/contacto/:id', [$contactoController, 'update']);
+$router->addRoute('DELETE', '/contacto/:id', [$contactoController, 'deleteById']);
 
 // Ruta de Personas
 $router->addRoute('GET', '/persona', [$personaController, 'listPersonas']);
