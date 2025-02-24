@@ -13,6 +13,7 @@ require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../app/utils/Response.php';
 require_once __DIR__ . '/../app/routes/Router.php';
 require_once __DIR__ . '/../app/controller/UserController.php';
+require_once __DIR__ . '/../app/controller/MiembroController.php';
 
 // Instancias
 $db = new Database();
@@ -21,6 +22,7 @@ $router = new Router();
 $GLOBALS['router'] = $router; // Guardar en $GLOBALS
 
 $userController = new UserController($db);
+$miembroController = new MiembroController($db);
 
 // Cargar rutas
 require_once '../app/routes/route.php';

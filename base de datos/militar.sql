@@ -52,7 +52,6 @@ CREATE TABLE Miembro (
     id_promocion INT ,
     id_especialidad INT ,
     id_contacto INT,
-    id_usuario INT,
     nombres VARCHAR(100),
     fecha_nac DATE,
     cargo VARCHAR(50),
@@ -60,8 +59,7 @@ CREATE TABLE Miembro (
     estado VARCHAR(50),
     FOREIGN KEY (id_promocion) REFERENCES Promocion(id_promocion) ON DELETE SET NULL,
     FOREIGN KEY (id_especialidad) REFERENCES Especialidad(id_especialidad) ON DELETE SET NULL,
-    FOREIGN KEY (id_contacto) REFERENCES Contacto(id_contacto) ON DELETE SET NULL,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario) ON DELETE CASCADE
+    FOREIGN KEY (id_contacto) REFERENCES Contacto(id_contacto) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 
