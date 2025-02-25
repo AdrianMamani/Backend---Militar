@@ -11,7 +11,7 @@ class Miembro
 
     public function countMiembro($estado)
     {
-        $query = "SELECT COUNT(id_miembro) 'Total'  FROM miembro WHERE estado = ?;";
+        $query = "SELECT COUNT(id_miembro)AS 'N° Total Miembros'  FROM miembro WHERE estado = ?;";
         $stm = $this->db->prepare($query);
 
         if (!$stm) {
@@ -22,14 +22,15 @@ class Miembro
         $stm->bind_param('s', $estado);
         $stm->execute();
         $result = $stm->get_result();
-        if (!$result && $stm->num_rows() === 0) {
+        if (!$result || $result->num_rows === 0) {
             error_log("No se Encontraron registros con el estado $estado " . $stm->error);
             return null;
         }
+        $count =  $result->fetch_assoc();
         $result->free();
         $stm->close();
 
-        return $result->fetch_assoc();
+        return $count;
     }
 
     public function getData()

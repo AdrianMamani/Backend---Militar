@@ -9,6 +9,29 @@ class Noticia
         $this->db = $conn->getConexion();
     }
 
+
+    public function countNoticia()
+    {
+        $query = "SELECT COUNT(id_noticia) AS 'N° Total Noticia' FROM noticia;";
+        $stm = $this->db->prepare($query);
+
+        if (!$stm) {
+            error_log("Hubo un Error en preparar la consulta " . $this->db->error);
+            return false;
+        }
+
+        $stm->execute();
+        $result = $stm->get_result();
+        if (!$result || $result->num_rows === 0) {
+            error_log("Hubo un error en consultar el N° Total de logros " . $stm->error);
+            return null;
+        }
+        $countNoticia = $result->fetch_assoc();
+        $result->free();
+        $stm->close();
+        return $countNoticia;
+    }
+
     public function getData()
     {
         $query = "CALL listNoticiasAndPersonas();";

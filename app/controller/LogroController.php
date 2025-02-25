@@ -10,12 +10,24 @@ class LogroController
         $this->logroModel = new Logro($db);
     }
 
+
+    public function countTotalLogro()
+    {
+        $cantidadLogro = $this->logroModel->countLogro();
+
+        if ($cantidadLogro === null) {
+            Response::json(["Message" => "Nose Encontraron Registros en la tabla Logros"]);
+        }
+
+        Response::json($cantidadLogro);
+    }
+
     public function listLogros()
     {
         $resultLogro = $this->logroModel->getData();
 
         if ($resultLogro === null) {
-            Response::json(["Message" => "No se encontraron registros en la tabla miembro"]);
+            Response::json(["Message" => "No se encontraron registros en la tabla Logro"]);
         } else {
             Response::json($resultLogro);
         }

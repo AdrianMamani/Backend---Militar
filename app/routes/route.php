@@ -59,7 +59,7 @@ $router->addRoute('DELETE', '/users/:id', [$userController, 'delete']);
 
 
 // Ruta de Miembros
-$router->addRoute('GET', '/miembros/:estado', [$miembroController, 'totalCountMiembro']);
+$router->addRoute('GET', '/miembros/total/:estado', [$miembroController, 'totalCountMiembro']);
 $router->addRoute('GET', '/miembros', [$miembroController, 'listAll']);
 $router->addRoute('GET', '/miembros/:id', [$miembroController, 'getById']);
 $router->addRoute('PUT', '/miembros/:id', [$miembroController, 'updateById']);
@@ -67,6 +67,7 @@ $router->addRoute('DELETE', '/miembros/:id', [$miembroController, 'deleteById'])
 
 // Ruta de Logros
 $router->addRoute('GET', '/logros', [$logroController, 'listLogros']);
+$router->addRoute('GET', '/logros/total', [$logroController, 'countTotalLogro']);
 $router->addRoute('POST', '/logros', [$logroController, 'createLogro']);
 $router->addRoute('PUT', '/logros/:id', [$logroController, 'update']);
 $router->addRoute('DELETE', '/logros/:id', [$logroController, 'deleteById']);
@@ -106,6 +107,7 @@ $router->addRoute('DELETE', '/evento/miembro/:idMiembro/:idEvento', [$eventoMiem
 
 // Ruta de Noticias
 $router->addRoute('GET', '/noticia', [$noticiaController, 'listAll']);
+$router->addRoute('GET', '/noticia/total', [$noticiaController, 'countTotalNoticia']);
 $router->addRoute('PUT', '/noticia/:id', [$noticiaController, 'update']);
 $router->addRoute('DELETE', '/noticia/:id', [$noticiaController, 'deleteById']);
 

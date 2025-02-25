@@ -16,7 +16,7 @@ class MiembroController
     public function totalCountMiembro($estado)
     {
         $result = $this->miembroModel->countMiembro($estado);
-        Response::json(["Total de Miembros" => $result]);
+        Response::json($result);
     }
 
 

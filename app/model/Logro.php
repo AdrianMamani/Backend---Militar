@@ -9,6 +9,27 @@ class Logro
         $this->db = $con->getConexion();
     }
 
+    public function countLogro()
+    {
+        $query = "SELECT COUNT(id_logro) AS 'N° Total Logros' FROM logro;";
+        $stm = $this->db->prepare($query);
+        if (!$stm) {
+            error_log("Error en preparar la Consulta " . $this->db->error);
+            return false;
+        }
+        $stm->execute();
+        $result = $stm->get_result();
+        if (!$result || $result->num_rows === 0) {
+            error_log("Hubo un problema al generar el total de logros " . $stm->error);
+            return null;
+        }
+        $countLogro = $result->fetch_assoc();
+        $result->free();
+        $stm->close();
+
+        return $countLogro;
+    }
+
     public function getData()
     {
         $query = "SELECT * FROM logro;";

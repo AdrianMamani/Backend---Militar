@@ -11,6 +11,16 @@ class NoticiaController
         $this->noticiaModel = new Noticia($db);
     }
 
+    public function countTotalNoticia()
+    {
+        $totalNoticia =  $this->noticiaModel->countNoticia();
+
+        if ($totalNoticia === null) {
+            Response::json("No se Encontro Registros en la Tabla Noticias");
+        }
+        Response::json($totalNoticia);
+    }
+
     public function listAll()
     {
         $noticias = $this->noticiaModel->getData();
