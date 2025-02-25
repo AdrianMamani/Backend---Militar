@@ -1,5 +1,4 @@
 <?php
-// app/core/Response.php
 
 class Response
 {
