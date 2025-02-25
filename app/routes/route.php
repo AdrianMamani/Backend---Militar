@@ -14,7 +14,7 @@ require_once __DIR__ . '/../controller/EventoMiembroController.php';
 require_once __DIR__ . '/../controller/NoticiaController.php';
 require_once __DIR__ . '/../controller/NoticiaPersonaController.php';
 require_once __DIR__ . '/../controller/MiembrosLogrosController.php';
-
+require_once __DIR__ . '/../controller/CategoriaController.php';
 require_once __DIR__ . '/../controller/TesoreroController.php';
 
 
@@ -39,6 +39,7 @@ $noticiaController = new NoticiaController($db);
 $noticiaPersonaController = new NoticiaPersonaController($db);
 $miembrosLogrosController = new MiembrosLogrosController($db);
 $userController = new UserController($db);
+$categoriaController  = new CategoriaController($db);
 
 // -----------------------
 // Rutas para Authenticacion
@@ -159,3 +160,9 @@ $router->addRoute('DELETE', '/balances/:id', [$balanceController, 'delete']);
 $tesoreroController = new TesoreroController($db);
 $router->addRoute('POST', '/tesorero', [$tesoreroController, 'create']);
 $router->addRoute('GET', '/tesorero', [$tesoreroController, 'getAll']);
+// -----------------------
+// Rutas para Categoria
+// -----------------------
+
+$router->addRoute('GET','/categoria', [$categoriaController, 'getAll']);
+$router->addRoute('POST','/categoria', [$categoriaController, 'create']);
