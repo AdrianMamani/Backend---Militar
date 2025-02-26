@@ -1,0 +1,18 @@
+{
+    "name": "ajca/backend-militar",
+    "autoload": {
+        "psr-4": {
+            "Ajca\\BackendMilitar\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AnthonyJCA16",
+            "email": "72991557+DSWAnthony@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^6.11",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
