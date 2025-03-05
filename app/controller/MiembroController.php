@@ -44,11 +44,11 @@ class MiembroController
         $result = $this->miembroModel->deleteData($id);
 
         if (!$result) {
-            Response::json(["Error" => "No se pudo eliminar el registro con ID $id"]);
+            Response::json(["Message" => "El Miembro con ID $id No Existe"]);
         }
 
         if ($result === null) {
-            Response::json(["Message" => "El Miembro con ID $id No Existe"]);
+            Response::json(["Error" => "No se pudo eliminar el registro con ID $id"]);
         }
         Response::json(["message" => "Miembro con ID $id Eliminado Correctamente"]);
     }
@@ -57,23 +57,17 @@ class MiembroController
     public function updateById($id)
     {
         $resultMiembro = $this->miembroModel->getDataMiembroById($id);
-        $idContacto = $resultMiembro["id_contacto"];
 
         $data = json_decode(file_get_contents("php://input"), true);
-
-        if (!isset($data["id_contacto"], $data["nombres"], $data["cargo"], $data["descripcion"])) {
+        if (!isset($data["nombres"], $data["cargo"], $data["descripcion"])) {
             Response::json(["Error" => "Se requiere mas campos"], 400);
         }
 
-        $this->miembroModel->putData($id, $idContacto, $data["nombres"], $data["cargo"], $data["descripcion"]);
-        $resultContacto = $this->contactoModel->update($idContacto, $data["id_contacto"]["numero"], $data["id_contacto"]["correo"], $data["id_contacto"]["lugar"]);
+        $resultMiembro = $this->miembroModel->putData($id, $data["nombres"], $data["cargo"], $data["descripcion"]);
 
-        if (!$resultContacto) {
-            Response::json(["Error" => "No se pudo eliminar el registro con ID $idContacto"]);
-        }
-
-        if ($resultContacto === null) {
-            Response::json(["Message" => "El Contacto con ID $id No Existe"]);
+        if (!$resultMiembro) {
+            # Response::json(["Error" => "No se pudo actualizar el registro con ID $id"]);
+            Response::json(["Message" => "El Miembro con ID $id No Existe"], 404);
         }
 
         Response::json(["message" => "Miembro con ID $id Se Actualizo Correctamente"]);

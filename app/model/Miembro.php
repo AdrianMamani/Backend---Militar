@@ -130,20 +130,25 @@ class Miembro
         return true;
     }
 
-    public function putData($id, $id_contacto, $nombres, $cargo, $descripcion)
+    public function putData($id, $nombres, $cargo, $descripcion)
     {
         // $query = "UPDATE miembro SET id_promocion=? , id_especialidad=? , id_contacto=? , id_usuario=? , nombres=? , fecha_nac=? , cargo=? , descripcion= ? , estado=? WHERE id_miembro = ?";
 
-        $query = "UPDATE miembro SET  id_contacto=? , nombres=? , cargo=? , descripcion= ?  WHERE id_miembro = ?";
+        $query = "UPDATE miembro SET  nombres=? , cargo=? , descripcion= ?  WHERE id_miembro = ?";
         $stm = $this->db->prepare($query);
         if (!$stm) {
             error_log("Ocurrio un problema al preparar la query" . $this->db->error);
             return false;
         }
-        $stm->bind_param("isssi",  $id_contacto, $nombres, $cargo, $descripcion, $id);
+        $stm->bind_param("sssi", $nombres, $cargo, $descripcion, $id);
         if (!$stm->execute()) {
             error_log("Ocurrio un error al actualizar el registro con ID " . $id . ": " . $stm->error);
             return false;
+        }
+
+        if ($stm->affected_rows === 0) {
+            error_log("El Id $id No Existe");
+            return null;
         }
         $stm->close();
         return true;
