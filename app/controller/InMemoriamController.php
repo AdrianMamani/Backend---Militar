@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../model/InMemoriam.php';
 
@@ -59,11 +59,11 @@ switch ($method) {
                 "success" => true,
                 "message" => "Registro creado exitosamente",
                 "data" => [
-                "nombre_miembro" => $nombre_miembro,
-                "fecha_fallecimiento" => $fecha_fallecimiento,
-                "descripcion" => $descripcion,
-                "imagen" => $imagenRuta,
-                "logros" => $logros
+                    "nombre_miembro" => $nombre_miembro,
+                    "fecha_fallecimiento" => $fecha_fallecimiento,
+                    "descripcion" => $descripcion,
+                    "imagen" => $imagenRuta,
+                    "logros" => $logros
                 ]
             ]);
             exit;
