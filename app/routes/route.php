@@ -52,117 +52,116 @@ $router->addRoute('POST', '/auth/logout', [$userController, 'logout']);
 // -----------------------
 // Rutas para Usuarios
 // -----------------------
-$router->addRoute('GET', '/users', [$userController, 'getAll']);
-$router->addRoute('GET', '/users/:id', [$userController, 'getById']);
-$router->addRoute('POST', '/users', [$userController, 'create']);
-$router->addRoute('PUT', '/users/:id', [$userController, 'update']);
-$router->addRoute('DELETE', '/users/:id', [$userController, 'delete']);
+$router->addRoute('GET', '/users', [$userController, 'getAll'],true);
+$router->addRoute('GET', '/users/:id', [$userController, 'getById'],true);
+$router->addRoute('POST', '/users', [$userController, 'create'],true);
+$router->addRoute('PUT', '/users/:id', [$userController, 'update'],true);
+$router->addRoute('DELETE', '/users/:id', [$userController, 'delete'],true);
 
 
 // Ruta de Miembros
 $router->addRoute('GET', '/miembros/total/:estado', [$miembroController, 'totalCountMiembro']);
-$router->addRoute('GET', '/miembros', [$miembroController, 'listAll']);
-$router->addRoute('GET', '/miembros/:id', [$miembroController, 'getById']);
-$router->addRoute('PUT', '/miembros/:id', [$miembroController, 'updateById']);
-$router->addRoute('DELETE', '/miembros/:id', [$miembroController, 'deleteById']);
+$router->addRoute('GET', '/miembros', [$miembroController, 'listAll'],true);
+$router->addRoute('GET', '/miembros/:id', [$miembroController, 'getById'],true);
+$router->addRoute('PUT', '/miembros/:id', [$miembroController, 'updateById'],true);
+$router->addRoute('DELETE', '/miembros/:id', [$miembroController, 'deleteById'],true);
 
 // Ruta de Logros
-$router->addRoute('GET', '/logros', [$logroController, 'listLogros']);
-$router->addRoute('GET', '/logros/total', [$logroController, 'countTotalLogro']);
-$router->addRoute('POST', '/logros', [$logroController, 'createLogro']);
-$router->addRoute('PUT', '/logros/:id', [$logroController, 'update']);
-$router->addRoute('DELETE', '/logros/:id', [$logroController, 'deleteById']);
+$router->addRoute('GET', '/logros', [$logroController, 'listLogros'],true);
+$router->addRoute('GET', '/logros/total', [$logroController, 'countTotalLogro'],true);
+$router->addRoute('POST', '/logros', [$logroController, 'createLogro'],true);
+$router->addRoute('PUT', '/logros/:id', [$logroController, 'update'],true);
+$router->addRoute('DELETE', '/logros/:id', [$logroController, 'deleteById'],true);
 
 
 // Ruta de Contactos
-$router->addRoute('GET', '/contacto', [$contactoController, 'listContactos']);
-$router->addRoute('GET', '/contacto/:id', [$contactoController, 'getById']);
-$router->addRoute('POST', '/contacto', [$contactoController, 'createContacto']);
-$router->addRoute('PUT', '/contacto/:id', [$contactoController, 'update']);
-$router->addRoute('DELETE', '/contacto/:id', [$contactoController, 'deleteById']);
+$router->addRoute('GET', '/contacto', [$contactoController, 'listContactos'],true);
+$router->addRoute('GET', '/contacto/:id', [$contactoController, 'getById'],true);
+$router->addRoute('POST', '/contacto', [$contactoController, 'createContacto'],true);
+$router->addRoute('PUT', '/contacto/:id', [$contactoController, 'update'],true);
+$router->addRoute('DELETE', '/contacto/:id', [$contactoController, 'deleteById'],true);
 
 // Ruta de Personas
-$router->addRoute('GET', '/persona', [$personaController, 'listPersonas']);
-$router->addRoute('GET', '/persona/:id', [$personaController, 'getById']);
-$router->addRoute('POST', '/persona', [$personaController, 'createPersona']);
-$router->addRoute('PUT', '/persona/:id', [$personaController, 'update']);
-$router->addRoute('DELETE', '/persona/:id', [$personaController, 'deleteById']);
+$router->addRoute('GET', '/persona', [$personaController, 'listPersonas'],true);
+$router->addRoute('GET', '/persona/:id', [$personaController, 'getById'],true);
+$router->addRoute('POST', '/persona', [$personaController, 'createPersona'],true);
+$router->addRoute('PUT', '/persona/:id', [$personaController, 'update'],true);
+$router->addRoute('DELETE', '/persona/:id', [$personaController, 'deleteById'],true);
 
 // Ruta de EventoPersonas
-$router->addRoute('GET', '/evento/persona', [$eventoPersonaController, 'listEventoPersona']);
-$router->addRoute('GET', '/evento/persona/:id', [$eventoPersonaController, 'getById']);
-$router->addRoute('POST', '/evento/persona', [$eventoPersonaController, 'createEventoPersona']);
-$router->addRoute('DELETE', '/evento/persona/:idPersona/:idEvento', [$eventoPersonaController, 'deleteById']);
+$router->addRoute('GET', '/evento/persona', [$eventoPersonaController, 'listEventoPersona'],true);
+$router->addRoute('GET', '/evento/persona/:id', [$eventoPersonaController, 'getById'],true);
+$router->addRoute('POST', '/evento/persona', [$eventoPersonaController, 'createEventoPersona'],true);
+$router->addRoute('DELETE', '/evento/persona/:idPersona/:idEvento', [$eventoPersonaController, 'deleteById'],true);
 
 // Ruta de Evento
-$router->addRoute('GET', '/evento', [$eventoController, 'listEventos']);
-$router->addRoute('GET', '/evento/:id', [$eventoController, 'getById']);
-$router->addRoute('PUT', '/evento/:id', [$eventoController, 'update']);
-$router->addRoute('DELETE', '/evento/:id', [$eventoController, 'deleteById']);
+$router->addRoute('GET', '/evento', [$eventoController, 'listEventos'],true);
+$router->addRoute('GET', '/evento/:id', [$eventoController, 'getById'],true);
+$router->addRoute('PUT', '/evento/:id', [$eventoController, 'update'],true);
+$router->addRoute('DELETE', '/evento/:id', [$eventoController, 'deleteById'],true);
 
 // Ruta de EventoMiembros
-$router->addRoute('GET', '/evento/miembro/:id', [$eventoMiembroController, 'getById']);
-$router->addRoute('POST', '/evento/miembro', [$eventoMiembroController, 'createEventoMiembro']);
-$router->addRoute('PUT', '/evento/miembro/:idMiembro/:idEvento', [$eventoMiembroController, 'update']);
-$router->addRoute('DELETE', '/evento/miembro/:idMiembro/:idEvento', [$eventoMiembroController, 'deleteById']);
+$router->addRoute('GET', '/evento/miembro/:id', [$eventoMiembroController, 'getById'],true);
+$router->addRoute('POST', '/evento/miembro', [$eventoMiembroController, 'createEventoMiembro'],true);
+$router->addRoute('PUT', '/evento/miembro/:idMiembro/:idEvento', [$eventoMiembroController, 'update'],true);
+$router->addRoute('DELETE', '/evento/miembro/:idMiembro/:idEvento', [$eventoMiembroController, 'deleteById'],true);
 
 // Ruta de Noticias
-$router->addRoute('GET', '/noticia', [$noticiaController, 'listAll']);
-$router->addRoute('GET', '/noticia/total', [$noticiaController, 'countTotalNoticia']);
-$router->addRoute('PUT', '/noticia/:id', [$noticiaController, 'update']);
-$router->addRoute('DELETE', '/noticia/:id', [$noticiaController, 'deleteById']);
+$router->addRoute('GET', '/noticia', [$noticiaController, 'listAll'],true);
+$router->addRoute('GET', '/noticia/total', [$noticiaController, 'countTotalNoticia'],true);
+$router->addRoute('PUT', '/noticia/:id', [$noticiaController, 'update'],true);
+$router->addRoute('DELETE', '/noticia/:id', [$noticiaController, 'deleteById'],true);
 
 // Ruta de NoticiaPersonas
-$router->addRoute('GET', '/noticia/persona/:id', [$noticiaPersonaController, 'getById']);
-$router->addRoute('POST', '/noticia/persona', [$noticiaPersonaController, 'createNoticiaPersona']);
-$router->addRoute('DELETE', '/noticia/persona/:idPersona/:idNoticia', [$noticiaPersonaController, 'deleteById']);
+$router->addRoute('GET', '/noticia/persona/:id', [$noticiaPersonaController, 'getById'],true);
+$router->addRoute('POST', '/noticia/persona', [$noticiaPersonaController, 'createNoticiaPersona'],true);
+$router->addRoute('DELETE', '/noticia/persona/:idPersona/:idNoticia', [$noticiaPersonaController, 'deleteById'],true);
 
 // Ruta de MiembrosLogros
-$router->addRoute('GET', '/miembros/logros/:id', [$miembrosLogrosController, 'getById']);
-$router->addRoute('POST', '/miembros/logros', [$miembrosLogrosController, 'createMiembrosLogros']);
-$router->addRoute('DELETE', '/miembros/logros/:idLogro/:idMiembro', [$miembrosLogrosController, 'deleteById']);
+$router->addRoute('GET', '/miembros/logros/:id', [$miembrosLogrosController, 'getById'],true);
+$router->addRoute('POST', '/miembros/logros', [$miembrosLogrosController, 'createMiembrosLogros'],true);
+$router->addRoute('DELETE', '/miembros/logros/:idLogro/:idMiembro', [$miembrosLogrosController, 'deleteById'],true);
 
 // -----------------------
 // Rutas para Aportación
 // -----------------------
 $aportacionController = new AportacionController($db);
-$router->addRoute('GET', '/aportaciones', [$aportacionController, 'getAll']);
-$router->addRoute('GET', '/aportaciones/:id', [$aportacionController, 'getById']);
-$router->addRoute('POST', '/aportaciones', [$aportacionController, 'create']);
-$router->addRoute('PUT', '/aportaciones/:id', [$aportacionController, 'update']);
-$router->addRoute('DELETE', '/aportaciones/:id', [$aportacionController, 'delete']);
+$router->addRoute('GET', '/aportaciones', [$aportacionController, 'getAll'],true);
+$router->addRoute('GET', '/aportaciones/:id', [$aportacionController, 'getById'],true);
+$router->addRoute('POST', '/aportaciones', [$aportacionController, 'create'],true);
+$router->addRoute('PUT', '/aportaciones/:id', [$aportacionController, 'update'],true);
+$router->addRoute('DELETE', '/aportaciones/:id', [$aportacionController, 'delete'],true);
 
 // -----------------------
 // Rutas para Asociado
 // -----------------------
 $asociadoController = new AsociadoController($db);
-$router->addRoute('GET', '/asociados', [$asociadoController, 'getAll']);
-$router->addRoute('GET', '/asociados/:id', [$asociadoController, 'getById']);
-$router->addRoute('POST', '/asociados', [$asociadoController, 'create']);
-$router->addRoute('PUT', '/asociados/:id', [$asociadoController, 'update']);
-$router->addRoute('DELETE', '/asociados/:id', [$asociadoController, 'delete']);
+$router->addRoute('GET', '/asociados', [$asociadoController, 'getAll'],true);
+$router->addRoute('GET', '/asociados/:id', [$asociadoController, 'getById'],true);
+$router->addRoute('POST', '/asociados', [$asociadoController, 'create'],true);
+$router->addRoute('PUT', '/asociados/:id', [$asociadoController, 'update'],true);
+$router->addRoute('DELETE', '/asociados/:id', [$asociadoController, 'delete'],true);
 
 // -----------------------
 // Rutas para Balance 
 // -----------------------
 // falta Crear Tabla
 $balanceController = new BalanceController($db);
-$router->addRoute('GET', '/balances', [$balanceController, 'getAll']);
-$router->addRoute('GET', '/balances/:id', [$balanceController, 'getById']);
-$router->addRoute('POST', '/balances', [$balanceController, 'create']);
-$router->addRoute('PUT', '/balances/:id', [$balanceController, 'update']);
-$router->addRoute('DELETE', '/balances/:id', [$balanceController, 'delete']);
+$router->addRoute('GET', '/balances', [$balanceController, 'getAll'],true);
+$router->addRoute('GET', '/balances/:id', [$balanceController, 'getById'],true);
+$router->addRoute('POST', '/balances', [$balanceController, 'create'],true);
+$router->addRoute('PUT', '/balances/:id', [$balanceController, 'update'],true);
+$router->addRoute('DELETE', '/balances/:id', [$balanceController, 'delete'],true);
 
 
 // -----------------------
 // Rutas para Tesorero
 // -----------------------
 $tesoreroController = new TesoreroController($db);
-$router->addRoute('POST', '/tesorero', [$tesoreroController, 'create']);
-$router->addRoute('GET', '/tesorero', [$tesoreroController, 'getAll']);
+$router->addRoute('POST', '/tesorero', [$tesoreroController, 'create'],true);
+$router->addRoute('GET', '/tesorero', [$tesoreroController, 'getAll'],true);
 // -----------------------
 // Rutas para Categoria
 // -----------------------
-
-$router->addRoute('GET','/categoria', [$categoriaController, 'getAll']);
-$router->addRoute('POST','/categoria', [$categoriaController, 'create']);
+$router->addRoute('GET','/categoria', [$categoriaController, 'getAll'],true);
+$router->addRoute('POST','/categoria', [$categoriaController, 'create'],true);

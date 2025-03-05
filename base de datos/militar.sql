@@ -228,6 +228,15 @@ CREATE TABLE Pago (
     FOREIGN KEY (id_aportacion) REFERENCES Aportacion(id_aportacion) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- Tabla: Balance
+CREATE TABLE Balance (
+    id_balance INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion VARCHAR(255) NOT NULL,
+    debe DECIMAL(12,2) NOT NULL,
+    haber DECIMAL(12,2) NOT NULL,
+    fecha DATE NOT NULL
+);
+
 #INSERTANDO DATOS EN CONTACTO 
 INSERT INTO contacto (num_contacto,correo,lugar)VALUES ("916912549","erksg.10.26@gmail.com","ATE");
 INSERT INTO contacto (num_contacto,correo,lugar)VALUES ("916912111","pedro_sq@gmail.com","SJL");
