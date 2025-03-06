@@ -15,7 +15,7 @@
 
 1. Clonar el repositorio:
     ```bash
-    git clone https://tu-repo.git Backend-Militar
+    git clone https://github.com/AdrianMamani/Backend---Militar.git
     ```
 
 2. Acceder al directorio:
