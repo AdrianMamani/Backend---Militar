@@ -2,24 +2,47 @@
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../model/InMemoriam.php';
 
-header("Content-Type: application/json");
-$db = new Database();
-$inMemoriam = new InMemoriam($db);
+class InMemoriamController {
+    private $inMemoriam;
 
-$method = $_SERVER['REQUEST_METHOD'];
+    public function __construct() {
+        $db = new Database();
+        $this->inMemoriam = new InMemoriam($db);
+    }
 
-switch ($method) {
-    case 'GET':
+    public function handleRequest() {
+        $method = $_SERVER['REQUEST_METHOD'];
+
+        switch ($method) {
+            case 'GET':
+                $this->get();
+                break;
+            case 'POST':
+                $this->post();
+                break;
+            case 'PUT':
+                $this->put();
+                break;
+            case 'DELETE':
+                $this->delete();
+                break;
+            default:
+                http_response_code(405);
+                echo json_encode(["error" => "Método no permitido"]);
+        }
+    }
+
+    private function get() {
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
-            $data = $inMemoriam->getById($id);
+            $data = $this->inMemoriam->getById($id);
         } else {
-            $data = $inMemoriam->getAll();
+            $data = $this->inMemoriam->getAll();
         }
         echo json_encode($data);
-        break;
+    }
 
-    case 'POST':
+    private function post() {
         if (!isset($_POST['nombre_miembro'], $_POST['fecha_fallecimiento'], $_POST['descripcion'])) {
             echo json_encode(["error" => "Faltan datos requeridos"]);
             http_response_code(400);
@@ -34,18 +57,17 @@ switch ($method) {
         // Manejo de imagen
         $imagenRuta = null;
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/../../galeria/'; // Ruta correcta
+            $uploadDir = __DIR__ . '/../../galeria/';
 
-            // Crear la carpeta si no existe
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
 
-            $imagenNombre = time() . '-' . basename($_FILES['imagen']['name']); // Evitar nombres duplicados
+            $imagenNombre = time() . '-' . basename($_FILES['imagen']['name']);
             $imagenRutaCompleta = $uploadDir . $imagenNombre;
 
             if (move_uploaded_file($_FILES['imagen']['tmp_name'], $imagenRutaCompleta)) {
-                $imagenRuta = "/galeria/" . $imagenNombre; // Ruta accesible desde el navegador
+                $imagenRuta = "/galeria/" . $imagenNombre;
             } else {
                 echo json_encode(["error" => "Error al mover la imagen"]);
                 http_response_code(500);
@@ -53,7 +75,7 @@ switch ($method) {
             }
         }
 
-        $result = $inMemoriam->create($nombre_miembro, $fecha_fallecimiento, $descripcion, $imagenRuta, $logros);
+        $result = $this->inMemoriam->create($nombre_miembro, $fecha_fallecimiento, $descripcion, $imagenRuta, $logros);
         if ($result) {
             echo json_encode([
                 "success" => true,
@@ -71,8 +93,9 @@ switch ($method) {
             echo json_encode(["error" => "No se pudo crear el registro"]);
             http_response_code(500);
         }
+    }
 
-    case 'PUT':
+    private function put() {
         $input = json_decode(file_get_contents("php://input"), true);
         if (!$input || !isset($input['id'], $input['nombre_miembro'], $input['fecha_fallecimiento'], $input['descripcion'], $input['imagen'])) {
             echo json_encode(["error" => "Faltan datos requeridos"]);
@@ -86,7 +109,7 @@ switch ($method) {
         $descripcion = $input['descripcion'];
         $imagen = $input['imagen'];
 
-        $result = $inMemoriam->update($id, $nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen);
+        $result = $this->inMemoriam->update($id, $nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen);
         if ($result) {
             echo json_encode([
                 "success" => true,
@@ -99,9 +122,9 @@ switch ($method) {
             ]);
         }
         exit;
-        break;
+    }
 
-    case 'DELETE':
+    private function delete() {
         $input = json_decode(file_get_contents("php://input"), true);
         if (!$input || !isset($input['id'])) {
             echo json_encode(["error" => "ID requerido"]);
@@ -110,7 +133,7 @@ switch ($method) {
         }
 
         $id = intval($input['id']);
-        $result = $inMemoriam->delete($id);
+        $result = $this->inMemoriam->delete($id);
         if ($result) {
             echo json_encode([
                 "success" => true,
@@ -120,10 +143,5 @@ switch ($method) {
             echo json_encode(["error" => "No se pudo eliminar el registro"]);
             http_response_code(500);
         }
-        break;
-
-    default:
-        http_response_code(405);
-        echo json_encode(["error" => "Método no permitido"]);
-        break;
+    }
 }

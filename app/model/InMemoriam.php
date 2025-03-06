@@ -43,77 +43,111 @@ class InMemoriam {
             $logros = json_decode($logros, true) ?: [];
         }
 
-        $sql_miembro = "INSERT INTO Miembro (nombres) VALUES (?)";
-        $stmt = $this->conn->prepare($sql_miembro);
-        $stmt->bind_param("s", $nombre_miembro);
-        $stmt->execute();
-        $id_miembro = $this->conn->insert_id;
+        $this->conn->begin_transaction();
 
-        $sql = "INSERT INTO InMemoriam (id_miembro, fecha_fallecimiento, descripcion) VALUES (?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iss", $id_miembro, $fecha_fallecimiento, $descripcion);
-        $stmt->execute();
+        try {
+            // Insertar Miembro
+            $sql_miembro = "INSERT INTO Miembro (nombres) VALUES (?)";
+            $stmt = $this->conn->prepare($sql_miembro);
+            $stmt->bind_param("s", $nombre_miembro);
+            $stmt->execute();
+            $id_miembro = $this->conn->insert_id;
 
-        $sql_imagen = "INSERT INTO Galeria (id_miembro, ruta_archivo) VALUES (?, ?)";
-        $stmt = $this->conn->prepare($sql_imagen);
-        $stmt->bind_param("is", $id_miembro, $imagen);
-        $stmt->execute();
-        $id_galeria = $this->conn->insert_id;
+            // Insertar en InMemoriam
+            $sql = "INSERT INTO InMemoriam (id_miembro, fecha_fallecimiento, descripcion) VALUES (?, ?, ?)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("iss", $id_miembro, $fecha_fallecimiento, $descripcion);
+            $stmt->execute();
 
-        foreach ($logros as $logro) {
-            if (is_array($logro) && isset($logro['nombre'])) {
-                $logro = $logro['nombre'];
-            } elseif (!is_string($logro)) {
-                continue;
+            // Insertar Imagen
+            if ($imagen) {
+                $sql_imagen = "INSERT INTO Galeria (id_miembro, ruta_archivo) VALUES (?, ?)";
+                $stmt = $this->conn->prepare($sql_imagen);
+                $stmt->bind_param("is", $id_miembro, $imagen);
+                $stmt->execute();
             }
 
-            $sql_logro = "INSERT INTO Logro (titulo) VALUES (?)";
-            $stmt = $this->conn->prepare($sql_logro);
-            $stmt->bind_param("s", $logro);
-            $stmt->execute();
-            $id_logro = $this->conn->insert_id;
+            // Insertar Logros
+            foreach ($logros as $logro) {
+                if (!is_string($logro) && isset($logro['nombre'])) {
+                    $logro = $logro['nombre'];
+                }
 
-            $sql_ml = "INSERT INTO Miembros_Logros (id_miembro, id_logro, id_galeria) VALUES (?, ?, ?)";
-            $stmt = $this->conn->prepare($sql_ml);
-            $stmt->bind_param("iii", $id_miembro, $id_logro, $id_galeria);
-            $stmt->execute();
+                if ($logro) {
+                    $sql_logro = "INSERT INTO Logro (titulo) VALUES (?)";
+                    $stmt = $this->conn->prepare($sql_logro);
+                    $stmt->bind_param("s", $logro);
+                    $stmt->execute();
+                    $id_logro = $this->conn->insert_id;
+
+                    $sql_ml = "INSERT INTO Miembros_Logros (id_miembro, id_logro) VALUES (?, ?)";
+                    $stmt = $this->conn->prepare($sql_ml);
+                    $stmt->bind_param("ii", $id_miembro, $id_logro);
+                    $stmt->execute();
+                }
+            }
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            return false;
         }
-        return true;
     }
 
     public function update($id, $nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen) {
-        $sql = "UPDATE InMemoriam SET fecha_fallecimiento = ?, descripcion = ? WHERE id_inmemoriam = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssi", $fecha_fallecimiento, $descripcion, $id);
-        $stmt->execute();
+        $this->conn->begin_transaction();
 
-        $sql_miembro = "UPDATE Miembro SET nombres = ? WHERE id_miembro = (SELECT id_miembro FROM InMemoriam WHERE id_inmemoriam = ?)";
-        $stmt = $this->conn->prepare($sql_miembro);
-        $stmt->bind_param("si", $nombre_miembro, $id);
-        $stmt->execute();
+        try {
+            // Actualizar InMemoriam
+            $sql = "UPDATE InMemoriam SET fecha_fallecimiento = ?, descripcion = ? WHERE id_inmemoriam = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ssi", $fecha_fallecimiento, $descripcion, $id);
+            $stmt->execute();
 
-        $sql_imagen = "UPDATE Galeria SET ruta_archivo = ? WHERE id_miembro = (SELECT id_miembro FROM InMemoriam WHERE id_inmemoriam = ?)";
-        $stmt = $this->conn->prepare($sql_imagen);
-        $stmt->bind_param("si", $imagen, $id);
-        $stmt->execute();
+            // Actualizar Miembro
+            $sql_miembro = "UPDATE Miembro SET nombres = ? WHERE id_miembro = (SELECT id_miembro FROM InMemoriam WHERE id_inmemoriam = ?)";
+            $stmt = $this->conn->prepare($sql_miembro);
+            $stmt->bind_param("si", $nombre_miembro, $id);
+            $stmt->execute();
 
-        return true;
+            // Actualizar Imagen solo si hay una nueva
+            if ($imagen) {
+                $sql_imagen = "UPDATE Galeria SET ruta_archivo = ? WHERE id_miembro = (SELECT id_miembro FROM InMemoriam WHERE id_inmemoriam = ?)";
+                $stmt = $this->conn->prepare($sql_imagen);
+                $stmt->bind_param("si", $imagen, $id);
+                $stmt->execute();
+            }
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            return false;
+        }
     }
 
     public function delete($id) {
-        $sql = "DELETE FROM Galeria WHERE id_miembro = (SELECT id_miembro FROM InMemoriam WHERE id_inmemoriam = ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
+        $this->conn->begin_transaction();
 
-        $sql = "DELETE FROM Miembros_Logros WHERE id_miembro = (SELECT id_miembro FROM InMemoriam WHERE id_inmemoriam = ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
+        try {
+            // Eliminar primero en InMemoriam
+            $sql = "DELETE FROM InMemoriam WHERE id_inmemoriam = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
 
-        $sql = "DELETE FROM InMemoriam WHERE id_inmemoriam = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+            // Eliminar Galeria
+            $sql = "DELETE FROM Galeria WHERE id_miembro = (SELECT id_miembro FROM Miembro WHERE id_miembro = (SELECT id_miembro FROM InMemoriam WHERE id_inmemoriam = ?))";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            return false;
+        }
     }
 }

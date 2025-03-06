@@ -16,6 +16,10 @@ require_once __DIR__ . '/../controller/NoticiaPersonaController.php';
 require_once __DIR__ . '/../controller/MiembrosLogrosController.php';
 require_once __DIR__ . '/../controller/CategoriaController.php';
 require_once __DIR__ . '/../controller/TesoreroController.php';
+require_once __DIR__ . '/../controller/InMemoriamController.php';
+require_once __DIR__ . '/../controller/InterfazController.php';
+
+
 
 
 if (!isset($GLOBALS['router'])) {
@@ -40,6 +44,10 @@ $noticiaPersonaController = new NoticiaPersonaController($db);
 $miembrosLogrosController = new MiembrosLogrosController($db);
 $userController = new UserController($db);
 $categoriaController  = new CategoriaController($db);
+$controller = new InMemoriamController();
+$interfazController = new InterfazController($db);
+
+
 
 // -----------------------
 // Rutas para Authenticacion
@@ -165,3 +173,22 @@ $router->addRoute('GET', '/tesorero', [$tesoreroController, 'getAll'],true);
 // -----------------------
 $router->addRoute('GET','/categoria', [$categoriaController, 'getAll'],true);
 $router->addRoute('POST','/categoria', [$categoriaController, 'create'],true);
+
+// -----------------------
+// Ruta de InMemoriam
+// -----------------------
+$router->addRoute('GET', '/inmemoriam', [$inMemoriamController, 'listAll'], true);
+$router->addRoute('GET', '/inmemoriam/:id', [$inMemoriamController, 'getById'], true);
+$router->addRoute('POST', '/inmemoriam', [$inMemoriamController, 'create'], true);
+$router->addRoute('PUT', '/inmemoriam/:id', [$inMemoriamController, 'update'], true);
+$router->addRoute('DELETE', '/inmemoriam/:id', [$inMemoriamController, 'delete'], true);
+
+// -----------------------
+// Ruta de Interfaz
+// -----------------------
+$interfazController = new InterfazController($db);
+$router->post('/subirArchivo', [new InterfazController(), 'subirArchivo']);
+$router->put('/actualizarInformacion', [new InterfazController(), 'actualizarInformacion']);
+$router->put('/actualizarGaleria', [new InterfazController(), 'actualizarGaleria']);
+$router->put('/actualizarInformacionVideo', [new InterfazController(), 'actualizarInformacionVideo']);
+$router->put('/editarImagenReferencia', [new InterfazController(), 'editarImagenReferencia']);
