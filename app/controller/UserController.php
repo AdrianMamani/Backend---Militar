@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../model/User.php";
-
+require_once __DIR__ . "/../utils/JwtHandler.php";
 class UserController
 {
     private $userModel;
@@ -91,7 +91,8 @@ class UserController
         $user = $this->userModel->findByUsername($data['username']);
 
         if ($user && password_verify($data['password'], $user['contrasena'])) {
-            $token = bin2hex(random_bytes(32));
+            $jwtHandler = new JWTHandler();
+            $token = $jwtHandler -> generateToken($user['id_usuario']);
             Response::json(['message' => 'Login exitoso', 'token' => $token]);
         } else {
             Response::json(['error' => 'Credenciales incorrectas'], 401);

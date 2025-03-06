@@ -7,6 +7,7 @@ class JWTHandler {
     private $issuer;
     private $audience;
     private $expire;
+    private $algorithm;
 
     public function __construct() {
 
@@ -14,6 +15,7 @@ class JWTHandler {
         $this->issuer   = $_ENV['JWT_ISSUER'];
         $this->audience = $_ENV['JWT_AUDIENCE'];
         $this->expire   = $_ENV['JWT_EXPIRE'];
+        $this->algorithm   = $_ENV['JWT_ALGORITHM'];
     }
 
     /**
@@ -30,7 +32,7 @@ class JWTHandler {
             'iat'  => $issuedAt,
             'exp'  => $expire,
         ];
-        return JWT::encode($token, $this->secret, 'HS256');
+        return JWT::encode($token, $this->secret, $this->algorithm);
     }
 
     /**

@@ -186,9 +186,8 @@ $router->addRoute('DELETE', '/inmemoriam/:id', [$inMemoriamController, 'delete']
 // -----------------------
 // Ruta de Interfaz
 // -----------------------
-$interfazController = new InterfazController($db);
-$router->post('/subirArchivo', [new InterfazController(), 'subirArchivo']);
-$router->put('/actualizarInformacion', [new InterfazController(), 'actualizarInformacion']);
-$router->put('/actualizarGaleria', [new InterfazController(), 'actualizarGaleria']);
-$router->put('/actualizarInformacionVideo', [new InterfazController(), 'actualizarInformacionVideo']);
-$router->put('/editarImagenReferencia', [new InterfazController(), 'editarImagenReferencia']);
+$router->addRoute("POST",'/subirArchivo', [$interfazController, 'subirArchivo']);
+$router->addRoute("PUT",'/actualizarInformacion', [$interfazController, 'actualizarInformacion']);
+$router->addRoute("PUT",'/actualizarGaleria', [$interfazController, 'actualizarGaleria']);
+$router->addRoute("PUT",'/actualizarInformacionVideo', [$interfazController, 'actualizarInformacionVideo']);
+$router->addRoute("PUT",'/editarImagenReferencia', [$interfazController, 'editarImagenReferencia']);

@@ -4,8 +4,8 @@ require_once __DIR__ . '/../model/Interfaz.php';
 class InterfazController {
     private $model;
 
-    public function __construct() {
-        $this->model = new InterfazModel();
+    public function __construct(Database $db) {
+        $this->model = new InterfazModel($db);
     }
 
     public function subirArchivo() {
@@ -70,19 +70,19 @@ class InterfazController {
     }
 }
 
-// Llamar automáticamente la función correcta según el método HTTP
-$controller = new InterfazController();
+// // Llamar automáticamente la función correcta según el método HTTP
+// $controller = new InterfazController();
 
-switch ($_SERVER['REQUEST_METHOD']) {
-    case 'POST':
-        $controller->subirArchivo();
-        break;
-    case 'PUT':
-        $controller->actualizarInformacion();
-        break;
-    default:
-        echo json_encode(['error' => 'Método no soportado'], JSON_PRETTY_PRINT);
-        http_response_code(405);
-        break;
-}
+// switch ($_SERVER['REQUEST_METHOD']) {
+//     case 'POST':
+//         $controller->subirArchivo();
+//         break;
+//     case 'PUT':
+//         $controller->actualizarInformacion();
+//         break;
+//     default:
+//         echo json_encode(['error' => 'Método no soportado'], JSON_PRETTY_PRINT);
+//         http_response_code(405);
+//         break;
+// }
 ?>
