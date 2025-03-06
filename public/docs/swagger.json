@@ -1,0 +1,210 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Militar",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/Backend---Militar/public",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": ["Usuarios"],
+                "summary": "Obtener todos los usuarios",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "responses": {
+                    "200": {"description": "Lista de usuarios"}
+                }
+            },
+            "post": {
+                "tags": ["Usuarios"],
+                "summary": "Crear un nuevo usuario (pruebas)",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {"type": "string"},
+                                    "password": {"type": "string"},
+                                    "rol": {"type": "string"}
+                                },
+                                "required": ["username", "password", "rol"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Usuario creado"}
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": ["Usuarios"],
+                "summary": "Obtener un usuario por ID",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "responses": {
+                    "200": {"description": "Datos del usuario"},
+                    "404": {"description": "Usuario no encontrado"}
+                }
+            },
+            "put": {
+                "tags": ["Usuarios"],
+                "summary": "Actualizar usuario",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {"type": "string"},
+                                    "email": {"type": "string"}
+                                },
+                                "required": ["username", "email"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Usuario actualizado"}
+                }
+            },
+            "delete": {
+                "tags": ["Usuarios"],
+                "summary": "Eliminar usuario",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "responses": {
+                    "200": {"description": "Usuario eliminado"},
+                    "500": {"description": "Error al eliminar"}
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": ["Usuarios"],
+                "summary": "Login de usuario",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {"type": "string"},
+                                    "password": {"type": "string"}
+                                },
+                                "required": ["username", "password"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {"type": "string"},
+                                        "token": {"type": "string"}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {"description": "Credenciales incorrectas"}
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": ["Usuarios"],
+                "summary": "Registro de usuario (crea un nuevo usuario)",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {"type": "string"},
+                                    "password": {"type": "string"},
+                                    "rol": {"type": "string"}
+                                },
+                                "required": ["username", "password", "rol"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Usuario registrado"},
+                    "500": {"description": "Error al registrar"}
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": ["Usuarios"],
+                "summary": "Logout (informativo)",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "responses": {
+                    "200": {"description": "Logout exitoso"}
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
