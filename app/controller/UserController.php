@@ -18,8 +18,10 @@ class UserController
     }
 
     // Obtener un usuario 
-    public function getById($id)
+    public function getById($authData,$id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id" );
         $user = $this->userModel->getById($id);
         if ($user) {
             Response::json($user);

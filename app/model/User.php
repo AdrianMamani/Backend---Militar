@@ -22,8 +22,10 @@ class UserModel
         return $users;
     }
 
-    public function getById($id)
+    public function getById(int $id)
     {
+        error_log("ID recibido en el Model: $id" );
+        
         $query = "SELECT id_usuario, nombre_usuario, rol FROM Usuario WHERE id_usuario = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $id);

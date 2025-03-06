@@ -6,8 +6,16 @@
     },
     "servers": [
         {
+            "url": "https://api.cjtech.me",
+            "description": "Servidor Hostinger"
+        },
+        {
             "url": "http://localhost/Backend---Militar/public",
-            "description": "Servidor local"
+            "description": "Servidor Local Apache"
+        },
+        {
+            "url": "http://localhost:8080",
+            "description": "Servidor Local Embebido Php"
         }
     ],
     "paths": {

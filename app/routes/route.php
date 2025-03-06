@@ -44,7 +44,7 @@ $noticiaPersonaController = new NoticiaPersonaController($db);
 $miembrosLogrosController = new MiembrosLogrosController($db);
 $userController = new UserController($db);
 $categoriaController  = new CategoriaController($db);
-$controller = new InMemoriamController();
+$inMemoriamController = new InMemoriamController($db);
 $interfazController = new InterfazController($db);
 
 

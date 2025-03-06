@@ -5,8 +5,7 @@ require_once __DIR__ . '/../model/InMemoriam.php';
 class InMemoriamController {
     private $inMemoriam;
 
-    public function __construct() {
-        $db = new Database();
+    public function __construct(Database $db) {
         $this->inMemoriam = new InMemoriam($db);
     }
 
