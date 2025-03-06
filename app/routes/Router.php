@@ -21,7 +21,7 @@ class Router
         $pattern = preg_replace('/:\w+/', '([^/]+)', $normalizedPath);
         return "#^" . $pattern . "$#";
     }
-
+    /*
     public function handleRequest()
     {
         $method = $_SERVER['REQUEST_METHOD'];
@@ -41,6 +41,41 @@ class Router
                     $userData = AuthMiddleware::handle();
                     array_unshift($matches, $userData);
                 }
+                return call_user_func_array($route['handler'], $matches);
+            }
+        }
+
+        // Si no se encontró la ruta, responde con error 404.
+        Response::json(['error' => 'Ruta no encontrada'], 404);
+    }
+        */
+    public function handleRequest()
+    {
+        $method = $_SERVER['REQUEST_METHOD'];
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        // Eliminar el prefijo "/Backend---Militar/public" de la URI
+        $basePath = '/Backend---Militar/public';
+        if (strpos($uri, $basePath) === 0) {
+            $uri = substr($uri, strlen($basePath));
+        }
+
+
+
+        foreach ($this->routes as $route) {
+            if ($route['method'] === $method && preg_match($route['pattern'], $uri, $matches)) {
+                array_shift($matches);
+
+                // Si la ruta está protegida, se ejecuta el middleware para validar el token
+                if ($route['protected']) {
+                    $userData = AuthMiddleware::handle();
+                    array_unshift($matches, $userData);
+                }
+                // Convertir el ID a un valor numérico (entero)
+                if (isset($matches[0]) && is_numeric($matches[0])) {
+                    $matches[0] = (int) $matches[0]; // Aseguramos que sea un entero
+                }
+
                 return call_user_func_array($route['handler'], $matches);
             }
         }

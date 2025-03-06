@@ -27,7 +27,7 @@ require_once __DIR__ . '/../app/controller/AportacionController.php';
 require_once __DIR__ . '/../app/controller/AsociadoController.php';
 require_once __DIR__ . '/../app/controller/BalanceController.php';
 require_once __DIR__ . '/../app/controller/TesoreroController.php';
-
+require_once __DIR__ . '/../app/controller/MiembroController.php';
 $router = new Router();
 
 // Asignar el router a una variable global para que sea accesible en el archivo de rutas

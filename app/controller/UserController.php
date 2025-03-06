@@ -20,6 +20,16 @@ class UserController
     // Obtener un usuario 
     public function getById($id)
     {
+        $id = (int) $id;
+        var_dump($id); // Esto te permitirá ver si $id está llegando como un entero o no.
+
+        if (!is_numeric($id)) {
+            Response::json(['error' => 'ID no válido'], 400);
+            return;
+        }
+
+
+
         $user = $this->userModel->getById($id);
         if ($user) {
             Response::json($user);
@@ -92,7 +102,7 @@ class UserController
 
         if ($user && password_verify($data['password'], $user['contrasena'])) {
             $jwtHandler = new JWTHandler();
-            $token = $jwtHandler -> generateToken($user['id_usuario']);
+            $token = $jwtHandler->generateToken($user['id_usuario']);
             Response::json(['message' => 'Login exitoso', 'token' => $token]);
         } else {
             Response::json(['error' => 'Credenciales incorrectas'], 401);
