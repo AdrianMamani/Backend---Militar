@@ -32,7 +32,7 @@ class Evento
     }
 
 
-    public function getDataById($id)
+    public function getDataById(int $id)
     {
         $query = "CALL EventoById(?); ";
         $stm = $this->db->prepare($query);
@@ -58,9 +58,9 @@ class Evento
         return $findById;
     }
 
-    public function putData($id, $nombreEvento, $lugar, $fecha, $descripcion)
+    public function putData(int $id, $nombreEvento, $lugar, $fecha, $descripcion)
     {
-        $query = "UPDATE evento SET  nombre_evento=?, lugar_evento=? ,fecha_evento=?, descripcion=? WHERE id_evento = ?";
+        $query = "UPDATE evento SET  nombre_evento=?, lugar_evento=? , fecha_evento=?, descripcion=? WHERE id_evento = ?";
         $stm = $this->db->prepare($query);
         if (!$stm) {
             error_log("Ocurrio un problema al preparar la query" . $this->db->error);
@@ -71,11 +71,17 @@ class Evento
             error_log("Ocurrio un error al actualizar el registro con ID " . $id . ": " . $stm->error);
             return false;
         }
+
+        if ($stm->affected_rows === 0) {
+            error_log("No Existe el ID $id");
+            return null;
+        }
+
         $stm->close();
         return true;
     }
 
-    public function deleteData($id)
+    public function deleteData(int $id)
     {
         $query = "DELETE FROM evento WHERE id_evento=?;";
         $stm =  $this->db->prepare($query);

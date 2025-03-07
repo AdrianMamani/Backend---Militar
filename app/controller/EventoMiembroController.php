@@ -12,8 +12,11 @@ class EventoMiembroController
     }
 
 
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result =  $this->eventoMiembroModel->getById($id);
         if ($result === null) {
             echo json_encode(["message" => "El ID $id No Existe"]);
@@ -38,8 +41,13 @@ class EventoMiembroController
         Response::json(["message" => "Organizador Registrado al Evento Exitosamente."]);
     }
 
-    public function update($idMiembro, $idEvento)
+    public function update($authData, $idMiembro, $idEvento)
     {
+        $idMiembro = intval($idMiembro);
+        $idEvento = intval($idEvento);
+        error_log("ID recibido en el controlador: $idMiembro");
+        error_log("ID recibido en el controlador: $idEvento");
+
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data["idNuevoMiembro"])) {
@@ -49,6 +57,10 @@ class EventoMiembroController
 
         $result = $this->eventoMiembroModel->putData($idMiembro, $idEvento,  $data['idNuevoMiembro']);
 
+        if ($result === null) {
+            Response::json(['error' => "No Existe el Evento Con ID $idEvento"], 404);
+        }
+
         if ($result) {
             Response::json(['message' => 'Organizador actualizado exitosamente']);
         } else {
@@ -56,12 +68,17 @@ class EventoMiembroController
         }
     }
 
-    public function deleteById($idMiembro, $idEvento)
+    public function deleteById($authData, $idMiembro, $idEvento)
     {
+        $idMiembro = intval($idMiembro);
+        $idEvento = intval($idEvento);
+        error_log("ID recibido en el controlador: $idMiembro");
+        error_log("ID recibido en el controlador: $idEvento");
+
         $result = $this->eventoMiembroModel->deleteData($idMiembro, $idEvento);
 
         if (!$result) {
-            Response::json(["Message" => "El Organizador con ID $idMiembro No Existe"]);
+            Response::json(["Message" => "El Organizador con ID $idMiembro o El Evento con ID $idEvento No Existe"]);
         }
 
         if ($result === null) {

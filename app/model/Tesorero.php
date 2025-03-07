@@ -1,13 +1,16 @@
 <?php
 
-class Tesorero {
+class Tesorero
+{
     private $db;
 
-    public function __construct(Database $db) {
+    public function __construct(Database $db)
+    {
         $this->db = $db->getConexion();
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         $query = "SELECT Tesorero.*, Contacto.num_contacto, Contacto.correo, Contacto.lugar 
                   FROM Tesorero 
                   JOIN Contacto ON Tesorero.id_contacto = Contacto.id_contacto";
@@ -20,7 +23,8 @@ class Tesorero {
         return $tesoreros;
     }
 
-    public function getById($id) {
+    public function getById(int $id)
+    {
         $query = "SELECT Tesorero.*, Contacto.num_contacto, Contacto.correo, Contacto.lugar 
                   FROM Tesorero 
                   JOIN Contacto ON Tesorero.id_contacto = Contacto.id_contacto
@@ -32,7 +36,8 @@ class Tesorero {
         return $result->fetch_assoc();
     }
 
-    public function create($id_contacto, $nombre_completo) {
+    public function create($id_contacto, $nombre_completo)
+    {
         $query = "INSERT INTO Tesorero (id_contacto, nombre_completo) VALUES (?, ?)";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("is", $id_contacto, $nombre_completo);
@@ -42,19 +47,19 @@ class Tesorero {
         return false;
     }
 
-    public function update($id, $id_contacto, $nombre_completo) {
+    public function update(int $id, $id_contacto, $nombre_completo)
+    {
         $query = "UPDATE Tesorero SET id_contacto = ?, nombre_completo = ? WHERE id_tesorero = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("isi", $id_contacto, $nombre_completo, $id);
         return $stmt->execute();
     }
 
-    public function delete($id) {
+    public function delete(int $id)
+    {
         $query = "DELETE FROM Tesorero WHERE id_tesorero = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 }
-
-?>

@@ -11,8 +11,11 @@ class NoticiaPersonaController
         $this->noticiaPersonaModel = new NoticiaPersona($db);
     }
 
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $idEvento = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result =  $this->noticiaPersonaModel->getById($id);
         if ($result === null) {
             echo json_encode(["message" => "El ID $id No Existe"]);
@@ -38,12 +41,17 @@ class NoticiaPersonaController
     }
 
 
-    public function deleteById($idPersona, $idNoticia)
+    public function deleteById($authData, $idPersona, $idNoticia)
     {
+        $idPersona = intval($idPersona);
+        $idNoticia = intval($idNoticia);
+        error_log("ID recibido en el controlador: $idPersona");
+        error_log("ID recibido en el controlador: $idNoticia");
+
         $result = $this->noticiaPersonaModel->deleteData($idPersona, $idNoticia);
 
         if (!$result) {
-            Response::json(["Message" => "La Persona de la Noticia con ID $idPersona No Existe"]);
+            Response::json(["Message" => "La Persona con ID $idPersona ó la Noticia con ID $idNoticia No Existe"]);
         }
 
         if ($result === null) {

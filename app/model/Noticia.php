@@ -54,7 +54,7 @@ class Noticia
     }
 
 
-    public function putData($id, $titulo, $descripcion, $fechaPublicacion)
+    public function putData(int $id, $titulo, $descripcion, $fechaPublicacion)
     {
         $query = "UPDATE noticia SET titulo=? , descripcion= ? , fecha_publicacion=?  WHERE id_noticia = ?";
         $stm = $this->db->prepare($query);
@@ -67,12 +67,17 @@ class Noticia
             error_log("Ocurrio un error al actualizar el registro con ID " . $id . ": " . $stm->error);
             return false;
         }
+        if ($stm->affected_rows === 0) {
+            error_log("No se encontró el registro con ID " . $id . " para actualizar");
+            return null;
+        }
+
         $stm->close();
         return true;
     }
 
 
-    public function deleteData($id)
+    public function deleteData(int $id)
     {
         $query = "DELETE FROM noticia WHERE  id_noticia = ?";
         $stm =  $this->db->prepare($query);

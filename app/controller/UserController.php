@@ -18,10 +18,11 @@ class UserController
     }
 
     // Obtener un usuario 
-    public function getById($authData,$id)
+    public function getById($authData, $id)
     {
         $id = intval($id);
-        error_log("ID recibido en el controlador: $id" );
+        error_log("ID recibido en el controlador: $id");
+
         $user = $this->userModel->getById($id);
         if ($user) {
             Response::json($user);
@@ -50,8 +51,11 @@ class UserController
     }
 
     // Actualizar usuario
-    public function update($id)
+    public function update($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data['username'], $data['email'])) {
@@ -69,9 +73,13 @@ class UserController
     }
 
     // Eliminar usuario
-    public function delete($id)
+    public function delete($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result = $this->userModel->delete($id);
+
 
         if ($result) {
             Response::json(['message' => 'Usuario eliminado']);
@@ -94,7 +102,7 @@ class UserController
 
         if ($user && password_verify($data['password'], $user['contrasena'])) {
             $jwtHandler = new JWTHandler();
-            $token = $jwtHandler -> generateToken($user['id_usuario']);
+            $token = $jwtHandler->generateToken($user['id_usuario']);
             Response::json(['message' => 'Login exitoso', 'token' => $token]);
         } else {
             Response::json(['error' => 'Credenciales incorrectas'], 401);

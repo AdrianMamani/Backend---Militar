@@ -1,16 +1,19 @@
 <?php
 require_once __DIR__ . '/../../config/Database.php';
 
-class InMemoriam {
+class InMemoriam
+{
     private $conn;
 
-    public function __construct(Database $db) {
+    public function __construct(Database $db)
+    {
         $this->conn = $db->getConexion();
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         $sql = "SELECT im.*, m.nombres, m.fecha_nac, g.ruta_archivo AS imagen,
-                       GROUP_CONCAT(l.titulo SEPARATOR ', ') AS logros
+                    GROUP_CONCAT(l.titulo SEPARATOR ', ') AS logros
                 FROM InMemoriam im
                 JOIN Miembro m ON im.id_miembro = m.id_miembro
                 LEFT JOIN Galeria g ON m.id_miembro = g.id_miembro
@@ -21,9 +24,10 @@ class InMemoriam {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getById($id) {
+    public function getById($id)
+    {
         $sql = "SELECT im.*, m.nombres, m.fecha_nac, g.ruta_archivo AS imagen,
-                       GROUP_CONCAT(l.titulo SEPARATOR ', ') AS logros
+                    GROUP_CONCAT(l.titulo SEPARATOR ', ') AS logros
                 FROM InMemoriam im
                 JOIN Miembro m ON im.id_miembro = m.id_miembro
                 LEFT JOIN Galeria g ON m.id_miembro = g.id_miembro
@@ -38,7 +42,8 @@ class InMemoriam {
         return $result->fetch_assoc();
     }
 
-    public function create($nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen, $logros) {
+    public function create($nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen, $logros)
+    {
         if (!is_array($logros)) {
             $logros = json_decode($logros, true) ?: [];
         }
@@ -95,7 +100,8 @@ class InMemoriam {
         }
     }
 
-    public function update($id, $nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen) {
+    public function update($id, $nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen)
+    {
         $this->conn->begin_transaction();
 
         try {
@@ -127,7 +133,8 @@ class InMemoriam {
         }
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $this->conn->begin_transaction();
 
         try {

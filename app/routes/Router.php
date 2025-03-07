@@ -26,7 +26,7 @@ class Router
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); // Obtiene la URI sin parámetros
-        
+
         // error_log("Solicitud recibida: $method $uri"); 
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && preg_match($route['pattern'], $uri, $matches)) {
@@ -39,9 +39,8 @@ class Router
                 return call_user_func_array($route['handler'], $matches);
             }
         }
-    
+
         // Si no se encontró la ruta, responde con error 404.
         Response::json(['error' => 'Ruta no encontrada'], 404);
     }
-    
 }

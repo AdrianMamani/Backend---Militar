@@ -11,7 +11,7 @@ class EventoMiembro
     }
     // LISTAR O ORGANIZADORES POR EL ID DEL EVENTO ---> OK
 
-    public function getById($id)
+    public function getById(int $id)
     {
         $query = "CALL listEventoOrganizador(?);";
         $stmt = $this->db->prepare($query);
@@ -50,7 +50,7 @@ class EventoMiembro
     // ACTUALIZAR ORGANIZADOR DEL EVENTO ASIGNADO  ---> OK
 
 
-    public function putData($idMiembro, $idEvento, $idNuevoMiembro)
+    public function putData(int $idMiembro, int $idEvento, $idNuevoMiembro)
     {
         $query = "UPDATE evento_miembro SET id_miembro =? WHERE id_evento= ? AND id_miembro =?;";
         $stm = $this->db->prepare($query);
@@ -63,12 +63,17 @@ class EventoMiembro
             error_log("Ocurrio un error al actualizar el registro con ID " . $idNuevoMiembro . ": " . $stm->error);
             return false;
         }
+        if ($stm->affected_rows === 0) {
+            error_log("No Existe el Evento Con ID $idEvento");
+            return null;
+        }
+
         $stm->close();
         return true;
     }
 
     // ELIMINAR ORGANIZADOR DEL EVENTO POR ID_ORGANIZADOR Y ID_EVENTO -- OK
-    public function deleteData($idMiembro, $idEvento)
+    public function deleteData(int $idMiembro, int $idEvento)
     {
         $query = "DELETE FROM evento_miembro where id_miembro = ? and id_evento = ?;";
         $stm =  $this->db->prepare($query);

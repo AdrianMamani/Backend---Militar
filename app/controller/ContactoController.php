@@ -23,8 +23,11 @@ class ContactoController
         }
     }
 
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $contacto = $this->contactoModel->getById($id);
         if ($contacto) {
             Response::json($contacto);
@@ -48,17 +51,24 @@ class ContactoController
         Response::json(["message" => "Contacto Guardado Exitosamente."]);
     }
 
-    public function update($id)
+    public function update($authData, $id)
     {
+
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $data = json_decode(file_get_contents("php://input"), true);
 
-        if (!isset($data["numero"], $data["correo"], $data["lugar"])) {
+        if (!isset($data["num_contacto"], $data["correo"], $data["lugar"])) {
             Response::json(['error' => 'Faltan datos'], 400);
             return;
         }
 
-        $result = $this->contactoModel->update($id, $data['numero'], $data['correo'], $data["lugar"]);
+        $result = $this->contactoModel->update($id, $data['num_contacto'], $data['correo'], $data["lugar"]);
 
+        if ($result === null) {
+            Response::json(['message' => "No Existe el ID $id"], 404);
+        }
         if ($result) {
             Response::json(['message' => 'Contacto actualizado exitosamente']);
         } else {
@@ -67,8 +77,10 @@ class ContactoController
     }
 
 
-    public function deleteById($id)
+    public function deleteById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
         $result = $this->contactoModel->delete($id);
 
         if (!$result) {

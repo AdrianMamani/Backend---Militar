@@ -54,8 +54,9 @@ class Miembro
         return $listMiembro;
     }
 
-    public function getDataById($id)
+    public function getDataById(int $id)
     {
+        error_log("ID recibido en el Model: $id");
         //$query = "SELECT * FROM miembro WHERE id_miembro= ? ";
         $query = "call miembrosById(?); ";
         $stm = $this->db->prepare($query);
@@ -130,7 +131,7 @@ class Miembro
         return true;
     }
 
-    public function putData($id, $nombres, $cargo, $descripcion)
+    public function putData(int $id, $nombres, $cargo, $descripcion)
     {
         // $query = "UPDATE miembro SET id_promocion=? , id_especialidad=? , id_contacto=? , id_usuario=? , nombres=? , fecha_nac=? , cargo=? , descripcion= ? , estado=? WHERE id_miembro = ?";
 
@@ -154,7 +155,7 @@ class Miembro
         return true;
     }
 
-    public function deleteData($id)
+    public function deleteData(int $id)
     {
         $query = "DELETE FROM miembro WHERE  id_miembro = ?";
         $stm =  $this->db->prepare($query);

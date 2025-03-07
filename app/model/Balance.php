@@ -1,29 +1,32 @@
 <?php
 
-class Balance{
+class Balance
+{
     private $db;
 
-    public function __construct(Database $db){
+    public function __construct(Database $db)
+    {
 
-        $this -> db = $db ->getConexion();
-
+        $this->db = $db->getConexion();
     }
 
-    public function getAll(){
+    public function getAll()
+    {
 
         $query = "SELECT * FROM Balance";
-        $result = $this -> db ->query($query);
+        $result = $this->db->query($query);
 
         $balances = [];
 
-        while ($row = $result-> fetch_assoc()) {
-                $balances[] = $row;
+        while ($row = $result->fetch_assoc()) {
+            $balances[] = $row;
         }
 
         return $balances;
     }
 
-    public function getBalanceById($id){
+    public function getBalanceById(int $id)
+    {
         $query = "SELECT * FROM Balance WHERE id_balance = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $id);
@@ -47,7 +50,7 @@ class Balance{
         return $success;
     }
 
-    public function update($id, $descripcion, $debe, $haber, $fecha)
+    public function update(int $id, $descripcion, $debe, $haber, $fecha)
     {
         $query = "UPDATE Balance SET descripcion = ?, debe = ?, haber = ?, fecha = ? WHERE id_balance = ?";
         $stmt = $this->db->prepare($query);
@@ -59,7 +62,7 @@ class Balance{
         return $success;
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         $query = "DELETE FROM Balance WHERE id_balance = ?";
         $stmt = $this->db->prepare($query);
@@ -70,7 +73,4 @@ class Balance{
 
         return $success;
     }
-    
 }
-
-?>

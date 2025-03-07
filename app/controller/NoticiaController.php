@@ -20,7 +20,6 @@ class NoticiaController
         }
         Response::json($totalNoticia);
     }
-
     public function listAll()
     {
         $noticias = $this->noticiaModel->getData();
@@ -30,18 +29,23 @@ class NoticiaController
         }
         Response::json($noticias);
     }
-
-
-    public function update($id)
+    public function update($authData, $id)
     {
+        $idEvento = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $data = json_decode(file_get_contents("php://input"), true);
 
-        if (!isset($data["titulo"], $data["descripcion"], $data["fechaPublicacion"])) {
+        if (!isset($data["titulo"], $data["descripcion"], $data["fecha_publicacion"])) {
             Response::json(['error' => 'Faltan datos'], 400);
             return;
         }
 
-        $result = $this->noticiaModel->putData($id, $data['titulo'], $data['descripcion'], $data["fechaPublicacion"]);
+        $result = $this->noticiaModel->putData($id, $data['titulo'], $data['descripcion'], $data["fecha_publicacion"]);
+
+        if ($result === null) {
+            Response::json(['error' => "La Noticia con ID $id No Existe"], 404);
+        }
 
         if ($result) {
             Response::json(['message' => 'Noticia actualizado exitosamente']);
@@ -51,12 +55,15 @@ class NoticiaController
     }
 
 
-    public function deleteById($id)
+    public function deleteById($authData, $id)
     {
+        $idEvento = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result = $this->noticiaModel->deleteData($id);
 
         if (!$result) {
-            Response::json(["Error" => "No se pudo eliminar el registro con ID $id"]);
+            Response::json(["Error" => "La Noticia con ID $id No Existe"], 404);
         }
 
         if ($result === null) {

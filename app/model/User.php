@@ -24,8 +24,9 @@ class UserModel
 
     public function getById(int $id)
     {
-        error_log("ID recibido en el Model: $id" );
-        
+
+        error_log("ID recibido en el Model: $id");
+
         $query = "SELECT id_usuario, nombre_usuario, rol FROM Usuario WHERE id_usuario = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $id);
@@ -43,7 +44,7 @@ class UserModel
         return $stmt->execute();
     }
 
-    public function update($id, $username, $rol)
+    public function update(int $id, $username, $rol)
     {
         $query = "UPDATE Usuario SET nombre_usuario = ?, rol = ? WHERE id_usuario = ?";
         $stmt = $this->db->prepare($query);
@@ -51,7 +52,7 @@ class UserModel
         return $stmt->execute();
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         $query = "DELETE FROM Usuario WHERE id_usuario = ?";
         $stmt = $this->db->prepare($query);

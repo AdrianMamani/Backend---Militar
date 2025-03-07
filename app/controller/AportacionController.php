@@ -1,24 +1,31 @@
 <?php
 require_once __DIR__ . '/../model/Aportacion.php';
 require_once __DIR__ . '/../model/Asociado.php';
-class AportacionController {
+class AportacionController
+{
     private $aportacionModel;
     private $asociadoModel;
 
-    public function __construct(Database $db) {
+    public function __construct(Database $db)
+    {
         $this->aportacionModel = new Aportacion($db);
         $this->asociadoModel = new Asociado($db);
     }
 
     // GET /aportaciones
-    public function getAll() {
+    public function getAll()
+    {
         $aportaciones = $this->aportacionModel->getAll();
         header("Content-Type: application/json");
         echo json_encode($aportaciones);
     }
 
     // GET /aportaciones/{id}
-    public function getById($id) {
+    public function getById($authData, $id)
+    {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $aportacion = $this->aportacionModel->getById($id);
         header("Content-Type: application/json");
         if ($aportacion) {
@@ -28,7 +35,8 @@ class AportacionController {
             echo json_encode(["error" => "Aportación no encontrada"]);
         }
     }
-    public function create() {
+    public function create()
+    {
         $data = json_decode(file_get_contents("php://input"), true);
 
         // Validar que existan los datos para el asociado y la aportación
@@ -104,7 +112,11 @@ class AportacionController {
     }
 
     // PUT/PATCH /aportaciones/{id}
-    public function update($id) {
+    public function update($authData, $id)
+    {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $data = json_decode(file_get_contents("php://input"), true);
         if (!isset($data['id_categoria'], $data['id_tesorero'], $data['montos'], $data['lugar'], $data['total'])) {
             http_response_code(400);
@@ -129,7 +141,11 @@ class AportacionController {
     }
 
     // DELETE /aportaciones/{id}
-    public function delete($id) {
+    public function delete($authData, $id)
+    {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $success = $this->aportacionModel->delete($id);
         header("Content-Type: application/json");
         if ($success) {
@@ -140,4 +156,3 @@ class AportacionController {
         }
     }
 }
-?>

@@ -2,14 +2,19 @@
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../model/InMemoriam.php';
 
-class InMemoriamController {
+class InMemoriamController
+{
     private $inMemoriam;
 
-    public function __construct(Database $db) {
+    public function __construct()
+    {
+        $db = new Database();
         $this->inMemoriam = new InMemoriam($db);
     }
 
-    public function handleRequest() {
+    /*
+    public function handleRequest()
+    {
         $method = $_SERVER['REQUEST_METHOD'];
 
         switch ($method) {
@@ -30,8 +35,8 @@ class InMemoriamController {
                 echo json_encode(["error" => "Método no permitido"]);
         }
     }
-
-    private function get() {
+    private function get()
+    {
         if (isset($_GET['id'])) {
             $id = intval($_GET['id']);
             $data = $this->inMemoriam->getById($id);
@@ -40,8 +45,19 @@ class InMemoriamController {
         }
         echo json_encode($data);
     }
+  */
+    public function listAll()
+    {
+        $inMemoriams = $this->inMemoriam->getAll();
 
-    private function post() {
+        if ($inMemoriams == null) {
+            echo "La tabla InMemoriam no cuenta con Registros";
+        }
+        Response::json($inMemoriams);
+    }
+
+    private function post()
+    {
         if (!isset($_POST['nombre_miembro'], $_POST['fecha_fallecimiento'], $_POST['descripcion'])) {
             echo json_encode(["error" => "Faltan datos requeridos"]);
             http_response_code(400);
@@ -94,7 +110,8 @@ class InMemoriamController {
         }
     }
 
-    private function put() {
+    private function put()
+    {
         $input = json_decode(file_get_contents("php://input"), true);
         if (!$input || !isset($input['id'], $input['nombre_miembro'], $input['fecha_fallecimiento'], $input['descripcion'], $input['imagen'])) {
             echo json_encode(["error" => "Faltan datos requeridos"]);
@@ -123,7 +140,8 @@ class InMemoriamController {
         exit;
     }
 
-    private function delete() {
+    private function delete()
+    {
         $input = json_decode(file_get_contents("php://input"), true);
         if (!$input || !isset($input['id'])) {
             echo json_encode(["error" => "ID requerido"]);
