@@ -9,7 +9,7 @@ class MiembrosLogros
     }
 
 
-    public function getById($id)
+    public function getById(int $id)
     {
         $query = "CALL listMiembroLogros(?);";
         $stmt = $this->db->prepare($query);
@@ -19,6 +19,9 @@ class MiembrosLogros
         $data = array();
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
+        }
+        if (count($data) === 0) {
+            return null;
         }
         return $data;
     }
@@ -43,8 +46,7 @@ class MiembrosLogros
         return true;
     }
 
-
-    public function deleteData($idLogro, $idMiembro)
+    public function deleteData(int $idLogro, int $idMiembro)
     {
         $query = "DELETE FROM miembros_logros WHERE id_logro = ? AND id_miembro = ?;";
         $stm =  $this->db->prepare($query);

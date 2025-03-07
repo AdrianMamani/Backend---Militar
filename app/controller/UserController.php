@@ -18,17 +18,10 @@ class UserController
     }
 
     // Obtener un usuario 
-    public function getById($id)
+    public function getById($authData, $id)
     {
-        $id = (int) $id;
-        var_dump($id); // Esto te permitirá ver si $id está llegando como un entero o no.
-
-        if (!is_numeric($id)) {
-            Response::json(['error' => 'ID no válido'], 400);
-            return;
-        }
-
-
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
 
         $user = $this->userModel->getById($id);
         if ($user) {
@@ -58,8 +51,11 @@ class UserController
     }
 
     // Actualizar usuario
-    public function update($id)
+    public function update($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data['username'], $data['email'])) {
@@ -77,9 +73,13 @@ class UserController
     }
 
     // Eliminar usuario
-    public function delete($id)
+    public function delete($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result = $this->userModel->delete($id);
+
 
         if ($result) {
             Response::json(['message' => 'Usuario eliminado']);

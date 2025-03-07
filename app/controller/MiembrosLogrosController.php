@@ -11,11 +11,15 @@ class MiembrosLogrosController
     }
 
 
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result =  $this->miembroLogroModel->getById($id);
         if ($result === null) {
-            echo json_encode(["message" => "El ID $id No Existe"]);
+            Response::json(["message" => "El ID $id No Existe"], 404);
+            # echo json_encode(["message" => "El ID $id No Existe"], 404);
         }
         Response::json($result);
     }
@@ -39,12 +43,18 @@ class MiembrosLogrosController
 
 
 
-    public function deleteById($idLogro, $idMiembro)
+    public function deleteById($authData, $idLogro, $idMiembro)
     {
+        $idLogro = intval($idLogro);
+        $idMiembro = intval($idMiembro);
+        error_log("ID recibido en el controlador: $idLogro");
+        error_log("ID recibido en el controlador: $idMiembro");
+
+
         $result = $this->miembroLogroModel->deleteData($idLogro, $idMiembro);
 
         if (!$result) {
-            Response::json(["Message" => "El Logro del Miembro con ID $idLogro No Existe"]);
+            Response::json(["Message" => "El Logro con ID $idLogro ó el Miembro con ID $idMiembro No Existe"], 404);
         }
 
         if ($result === null) {

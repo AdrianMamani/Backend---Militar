@@ -20,7 +20,7 @@ class Contacto
         return $contactos;
     }
 
-    public function getById($id)
+    public function getById(int $id)
     {
         $query = "SELECT * FROM Contacto WHERE id_contacto = ?";
         $stmt = $this->db->prepare($query);
@@ -41,15 +41,21 @@ class Contacto
         return false;
     }
 
-    public function update($id, $num_contacto, $correo, $lugar)
+    public function update(int $id, $num_contacto, $correo, $lugar)
     {
         $query = "UPDATE Contacto SET num_contacto = ?, correo = ?, lugar = ? WHERE id_contacto = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("sssi", $num_contacto, $correo, $lugar, $id);
+
+        if ($stmt->affected_rows === 0) {
+            error_log("No Existe el ID $id");
+            return null;
+        }
+
         return $stmt->execute();
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         $query = "DELETE FROM Contacto WHERE id_contacto = ?";
         $stmt = $this->db->prepare($query);

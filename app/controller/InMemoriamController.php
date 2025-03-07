@@ -6,9 +6,9 @@ class InMemoriamController
 {
     private $inMemoriam;
 
-    public function __construct(Database $db)
+    public function __construct()
     {
-        # $db = new Database();
+        $db = new Database();
         $this->inMemoriam = new InMemoriam($db);
     }
 
@@ -35,7 +35,6 @@ class InMemoriamController
                 echo json_encode(["error" => "Método no permitido"]);
         }
     }
-  
     private function get()
     {
         if (isset($_GET['id'])) {

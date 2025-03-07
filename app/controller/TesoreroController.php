@@ -65,12 +65,12 @@ class TesoreroController
     {
         $data = json_decode(file_get_contents("php://input"), true);
 
-        if (!isset($data['nombre_completo'])) {
+        if (!isset($data['nombre_completo'], $data["contacto"])) {
             Response::json(['error' => 'Faltan datos'], 400);
             return;
         }
 
-        $result = $this->tesoreroModel->update($id, $data['nombre_completo']);
+        $result = $this->tesoreroModel->update($id, $data["contacto"], $data['nombre_completo']);
 
         if ($result) {
             Response::json(['message' => 'Tesorero actualizado exitosamente']);

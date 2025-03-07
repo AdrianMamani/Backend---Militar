@@ -49,8 +49,12 @@ class LogroController
         Response::json(["message" => "Logro Guardado Exitosamente."]);
     }
 
-    public function update($id)
+    public function update($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
+
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data["titulo"], $data["descripcion"])) {
@@ -68,8 +72,11 @@ class LogroController
     }
 
 
-    public function deleteById($id)
+    public function deleteById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result = $this->logroModel->deleteData($id);
 
         if (!$result) {

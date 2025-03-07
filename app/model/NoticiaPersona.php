@@ -10,7 +10,7 @@ class NoticiaPersona
     }
 
 
-    public function getById($id)
+    public function getById(int $id)
     {
         $query = "CALL ListNoticiaPersonaByIdNoticia(?);";
         $stmt = $this->db->prepare($query);
@@ -47,7 +47,7 @@ class NoticiaPersona
 
 
 
-    public function deleteData($idPersona, $idNoticia)
+    public function deleteData(int $idPersona, int $idNoticia)
     {
         $query = "DELETE FROM noticia_persona WHERE id_persona = ? and id_noticia= ?;";
         $stm =  $this->db->prepare($query);

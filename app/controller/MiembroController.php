@@ -30,17 +30,26 @@ class MiembroController
         Response::json($miembros);
     }
 
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result =  $this->miembroModel->getDataById($id);
         if ($result === null) {
             echo json_encode(["message" => "El ID $id No Existe"]);
+            return;
         }
         Response::json($result);
     }
 
-    public function deleteById($id)
+    public function deleteById($authData, $id)
     {
+
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
+
         $result = $this->miembroModel->deleteData($id);
 
         if (!$result) {
@@ -54,8 +63,11 @@ class MiembroController
     }
 
 
-    public function updateById($id)
+    public function updateById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $resultMiembro = $this->miembroModel->getDataMiembroById($id);
 
         $data = json_decode(file_get_contents("php://input"), true);

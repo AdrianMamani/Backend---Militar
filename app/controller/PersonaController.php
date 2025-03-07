@@ -22,8 +22,12 @@ class PersonaController
         }
     }
 
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
+
         $result =  $this->personaModel->getDataById($id);
         if ($result === null) {
             echo json_encode(["message" => "El ID $id No Existe"]);
@@ -48,8 +52,11 @@ class PersonaController
         Response::json(["message" => "Persona Guardado Exitosamente."]);
     }
 
-    public function update($id)
+    public function update($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data["contacto"], $data["nombres"])) {
@@ -67,12 +74,15 @@ class PersonaController
     }
 
 
-    public function deleteById($id)
+    public function deleteById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result = $this->personaModel->deleteData($id);
 
         if (!$result) {
-            Response::json(["Message" => "El Logro con ID $id No Existe"]);
+            Response::json(["Message" => "La Persona con ID $id No Existe"]);
         }
 
         if ($result === null) {

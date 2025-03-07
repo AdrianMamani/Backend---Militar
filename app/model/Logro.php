@@ -73,7 +73,7 @@ class Logro
 
 
 
-    public function putData($id, $titulo, $descripcion)
+    public function putData(int $id, $titulo, $descripcion)
     {
         $query = "UPDATE logro SET  titulo=? , descripcion=? WHERE id_logro = ?";
         $stm = $this->db->prepare($query);
@@ -90,7 +90,7 @@ class Logro
         return true;
     }
 
-    public function deleteData($id)
+    public function deleteData(int $id)
     {
         $query = "DELETE FROM logro WHERE  id_logro = ?";
         $stm =  $this->db->prepare($query);

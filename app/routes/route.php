@@ -44,7 +44,7 @@ $noticiaPersonaController = new NoticiaPersonaController($db);
 $miembrosLogrosController = new MiembrosLogrosController($db);
 $userController = new UserController($db);
 $categoriaController  = new CategoriaController($db);
-$controller = new InMemoriamController($db);
+$inMemoriamController = new InMemoriamController($db);
 $interfazController = new InterfazController($db);
 
 
@@ -177,11 +177,11 @@ $router->addRoute('POST', '/categoria', [$categoriaController, 'create'], true);
 // -----------------------
 // Ruta de InMemoriam
 // -----------------------
-$router->addRoute('GET', '/inmemoriam', [$controller, 'listAll'], true);
+$router->addRoute('GET', '/inmemoriam', [$inMemoriamController, 'listAll'], true);
 #$router->addRoute('GET', '/inmemoriam/:id', [$inMemoriamController, 'getById'], true);
-$router->addRoute('POST', '/inmemoriam', [$controller, 'post'], true);
-$router->addRoute('PUT', '/inmemoriam/:id', [$controller, 'put'], true);
-$router->addRoute('DELETE', '/inmemoriam/:id', [$controller, 'delete'], true);
+$router->addRoute('POST', '/inmemoriam', [$inMemoriamController, 'post'], true);
+$router->addRoute('PUT', '/inmemoriam/:id', [$inMemoriamController, 'put'], true);
+$router->addRoute('DELETE', '/inmemoriam/:id', [$inMemoriamController, 'delete'], true);
 
 // -----------------------
 // Ruta de Interfaz

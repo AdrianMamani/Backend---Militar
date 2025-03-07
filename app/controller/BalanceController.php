@@ -19,8 +19,11 @@ class BalanceController
     }
 
     // Obtener un balance por ID
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $balance = $this->balanceModel->getBalanceById($id);
         if ($balance) {
             Response::json($balance);
@@ -58,8 +61,11 @@ class BalanceController
     }
 
     // Actualizar balance
-    public function update($id)
+    public function update($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $data = json_decode(file_get_contents("php://input"), true);
         if (
             !isset($data['descripcion']) ||
@@ -87,8 +93,11 @@ class BalanceController
     }
 
     // Eliminar balance
-    public function delete($id)
+    public function delete($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $success = $this->balanceModel->delete($id);
         if ($success) {
             Response::json(['message' => 'Balance eliminado']);
@@ -97,4 +106,3 @@ class BalanceController
         }
     }
 }
-?>

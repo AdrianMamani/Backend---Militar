@@ -30,7 +30,7 @@ class Persona
     }
 
 
-    public function getDataById($id)
+    public function getDataById(int $id)
     {
         $query = "SELECT * FROM persona WHERE id_personas= ? ";
         $stm = $this->db->prepare($query);
@@ -76,7 +76,7 @@ class Persona
         return true;
     }
 
-    public function putData($id, $contacto, $nombres)
+    public function putData(int $id, $contacto, $nombres)
     {
         $query = "UPDATE persona SET  contacto=? , nombres=? WHERE id_personas = ?";
         $stm = $this->db->prepare($query);
@@ -93,7 +93,7 @@ class Persona
         return true;
     }
 
-    public function deleteData($id)
+    public function deleteData(int $id)
     {
         $query = "DELETE FROM persona WHERE  id_personas = ?";
         $stm =  $this->db->prepare($query);

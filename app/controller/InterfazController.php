@@ -1,14 +1,17 @@
 <?php
 require_once __DIR__ . '/../model/Interfaz.php';
 
-class InterfazController {
+class InterfazController
+{
     private $model;
 
-    public function __construct(Database $db) {
+    public function __construct(Database $db)
+    {
         $this->model = new InterfazModel($db);
     }
 
-    public function subirArchivo() {
+    public function subirArchivo()
+    {
         header("Content-Type: application/json");
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -49,7 +52,8 @@ class InterfazController {
         echo json_encode(['success' => $resultado, 'ruta' => $ruta_archivo], JSON_PRETTY_PRINT);
     }
 
-    public function actualizarInformacion() {
+    public function actualizarInformacion()
+    {
         header("Content-Type: application/json");
 
         if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
@@ -85,4 +89,3 @@ class InterfazController {
 //         http_response_code(405);
 //         break;
 // }
-?>

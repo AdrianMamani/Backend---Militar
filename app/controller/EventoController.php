@@ -22,26 +22,36 @@ class EventoController
     }
 
 
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
+
         $result =  $this->eventoModel->getDataById($id);
         if ($result === null) {
             echo json_encode(["message" => "El ID $id No Existe"]);
+            return;
         }
         Response::json($result);
     }
 
 
-    public function update($id)
+    public function update($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
         $data = json_decode(file_get_contents("php://input"), true);
 
-        if (!isset($data["nombreEvento"], $data["lugarEvento"], $data["fechaEvento"], $data["actividad"])) {
+        if (!isset($data["nombre_evento"], $data["lugar_evento"], $data["fecha_evento"], $data["descripcion"])) {
             Response::json(['error' => 'Faltan datos'], 400);
             return;
         }
 
-        $result = $this->eventoModel->putData($id, $data['nombreEvento'], $data['lugarEvento'], $data["fechaEvento"], $data["actividad"]);
+        $result = $this->eventoModel->putData($id, $data['nombre_evento'], $data['lugar_evento'], $data["fecha_evento"], $data["descripcion"]);
+
+        if ($result === null) {
+            Response::json(['error' => "No Existe el Evento con Id $id"], 404);
+        }
 
         if ($result) {
             Response::json(['message' => 'Evento actualizado exitosamente']);
@@ -50,8 +60,10 @@ class EventoController
         }
     }
 
-    public function deleteById($id)
+    public function deleteById($authData, $id)
     {
+        $id = intval($id);
+        error_log("ID recibido en el controlador: $id");
         $result = $this->eventoModel->deleteData($id);
 
         if (!$result) {
