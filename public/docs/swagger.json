@@ -410,6 +410,1696 @@
                         }
                     }
                 }
+            },
+            "put": {
+                "tags": ["Miembros"],
+                "summary": "Actualizar Miembros",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nombres": {"type": "string"},
+                                    "cargo": {"type": "string"},
+                                    "descripcion":{"type":"string"}
+                                },
+                                "required": ["nombres", "cargo","descripcion"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Miembro actualizado"},
+                    "404": {"description": "Miembro no encontrado"}
+                }
+            }
+        },
+        "/logros/total": {
+            "get": {
+                "tags": ["Logros"],
+                "summary": "Cantidad de todos los Logros",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "getCountLogros",
+                "responses": {
+                    "200": {
+                        "description": "Cantidad de Logros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logros": {
+            "get": {
+                "tags": ["Logros"],
+                "summary": "Obtener la lista de todos los Logros de la promocion",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "ListarAllLogros",
+                "responses": {
+                    "200": {
+                        "description": "Lista de Logros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_logro": {
+                                                "type": "integer"
+                                            },
+                                            "titulo": {
+                                                "type": "string"
+                                            },
+                                            "descripcion": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No hay Logros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Logros"],
+                "summary": "Crear un nuevo Logro",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titulo": {"type": "string"},
+                                    "descripcion": {"type": "string"}
+                                },
+                                "required": ["titulo", "descripcion"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Logro Creado"}
+                }
+            }
+        },
+        "/logros/{id}": {
+            "put": {
+                "tags": ["Logros"],
+                "summary": "Actualizar Logros",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titulo": {"type": "string"},
+                                    "descripcion":{"type":"string"}
+                                },
+                                "required": ["titulo","descripcion"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Logro actualizado"},
+                    "404": {"description": "Logro no encontrado"}
+                }
+            },
+            "delete": {
+                "tags": ["Logros"],
+                "summary": "Eliminar Logro por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar un Logro por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logro Eliminado Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contacto": {
+            "get": {
+                "tags": ["Contacto"],
+                "summary": "Obtener la lista de todos los Contactos",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "ListarAllContactos",
+                "responses": {
+                    "200": {
+                        "description": "Lista de Contacto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_contacto": {
+                                                "type": "integer"
+                                            },
+                                            "num_contacto": {
+                                                "type": "string"
+                                            },
+                                            "correo": {
+                                                "type": "string"
+                                            },
+                                            "lugar": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No hay Contactos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Contacto"],
+                "summary": "Crear un nuevo Contacto",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "numero": {"type": "string"},
+                                    "correo": {"type": "string"},
+                                    "lugar": {"type": "string"}
+                                },
+                                "required": ["numero", "correo","lugar"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Contacto Creado"}
+                }
+            }
+
+        },
+        "/contacto/{id}": {
+            "get": {
+                "tags": ["Contacto"],
+                "summary": "Obtener el Contacto por Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "GetContactoById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del Contacto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contacto Encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Contacto no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Contacto"],
+                "summary": "Actualizar Contacto",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "num_contacto": {"type": "string"},
+                                    "correo":{"type":"string"},
+                                    "lugar":{"type":"string"}
+                                },
+                                "required": ["num_contacto","correo","lugar"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Contacto actualizado"},
+                    "404": {"description": "Contacto no encontrado"}
+                }
+            },
+            "delete": {
+                "tags": ["Contacto"],
+                "summary": "Eliminar Contacto por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar Contacto por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contacto Eliminado Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        },
+        "/persona": {
+            "get": {
+                "tags": ["Persona"],
+                "summary": "Obtener la lista de todos las Personas",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "ListarAllPersona",
+                "responses": {
+                    "200": {
+                        "description": "Lista de Personas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_personas": {
+                                                "type": "integer"
+                                            },
+                                            "nombres": {
+                                                "type": "string"
+                                            },
+                                            "contacto": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No hay Personas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Persona"],
+                "summary": "Crear una nueva Persona",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "contacto": {"type": "string"},
+                                    "nombres": {"type": "string"}
+                                },
+                                "required": ["contacto", "nombres"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Persona Creado"}
+                }
+            }
+        },
+        "/persona/{id}": {
+            "get": {
+                "tags": ["Persona"],
+                "summary": "Obtener la Persona por Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "GetPersonaById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de la Persona",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persona Encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Persona no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Persona"],
+                "summary": "Actualizar Persona",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "contacto": {"type": "string"},
+                                    "nombres":{"type":"string"}
+                                },
+                                "required": ["contacto","nombres"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Persona actualizado"},
+                    "404": {"description": "Persona no Existe"}
+                }
+            },
+            "delete": {
+                "tags": ["Persona"],
+                "summary": "Eliminar Persona por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar una Persona por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persona Eliminado Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evento/persona": {
+            "get": {
+                "tags": ["Evento Persona"],
+                "summary": "Obtener la lista de todos las Personas por Evento",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "ListarAllEventoPersona",
+                "responses": {
+                    "200": {
+                        "description": "Lista de Personas Por Evento",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_personas": {
+                                                "type": "integer"
+                                            },
+                                            "Invitado": {
+                                                "type": "string"
+                                            },
+                                            "Contacto": {
+                                                "type": "string"
+                                            },
+                                            "Evento": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No hay Evento Personas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Evento Persona"],
+                "summary": "Crear una nueva Persona al Evento",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "idEvento": {"type": "integer"},
+                                    "idPersona": {"type": "integer"}                
+                                },
+                                "required": ["idEvento", "idPersona"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Persona Registrado al Evento"}
+                }
+            }
+        },
+        "/evento/persona/{id}": {
+            "get": {
+                "tags": ["Evento Persona"],
+                "summary": "Obtener el La Lista de Persona por el ID del evento",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "GetPersonasByIdEvento",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de Personas Por Evento encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "El ID del Evento no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }       
+        },
+        "/evento/persona/{idPersona}/{idEvento}": {
+            "delete": {
+                "tags": ["Evento Persona"],
+                "summary": "Eliminar Persona del Evento por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar Persona del Evento por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "idPersona",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "idEvento",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persona Eliminado del Evento Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evento": {
+            "get": {
+                "tags": ["Evento"],
+                "summary": "Obtener la lista de todos los Eventos",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "ListarAllEventos",
+                "responses": {
+                    "200": {
+                        "description": "Lista de Eventos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_evento": {
+                                                "type": "integer"
+                                            },
+                                            "nombre_evento": {
+                                                "type": "string"
+                                            },
+                                            "descripcion": {
+                                                "type": "string"
+                                            },
+                                            "lugar_evento": {
+                                                "type": "string"
+                                            },
+                                            "fecha_evento": {
+                                                "type": "string"
+                                            },
+                                            "Organizadores": {
+                                                "type": "string"
+                                            },
+                                            "Celulares": {
+                                                "type": "string"
+                                            },
+                                            "Email": {
+                                                "type": "string"
+                                            }
+
+
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No hay Personas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evento/{id}": {
+            "get": {
+                "tags": ["Evento"],
+                "summary": "Obtener el Evento por Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "GetEventoById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del Evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Evento Encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Evento no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Evento"],
+                "summary": "Actualizar Evento",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nombre_evento": {"type": "string"},
+                                    "lugar_evento":{"type":"string"},
+                                    "fecha_evento":{"type":"string"},
+                                    "descripcion":{"type":"string"}
+                                },
+                                "required": ["nombre_evento","lugar_evento","fecha_evento","descripcion"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Evento actualizado"},
+                    "404": {"description": "Evento no Existe"}
+                }
+            },
+            "delete": {
+                "tags": ["Evento"],
+                "summary": "Eliminar Evento por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar una Evento por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Evento Eliminado Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evento/miembro/{id}": {
+            "get": {
+                "tags": ["Organizadores por Evento"],
+                "summary": "Obtener los Organizadores por Id del Evento",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "GetOrganizadoresByIdEvento",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del Evento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Evento Encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Evento no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/evento/miembro":{
+            "post": {
+                "tags": ["Organizadores por Evento"],
+                "summary": "Crear una nuevo Organizador al Evento",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "idEvento": {"type": "integer"},
+                                    "idMiembro": {"type": "integer"}                
+                                },
+                                "required": ["idEvento", "idMiembro"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Organizador Registrado al Evento"}
+                }
+            }
+        },
+        "/evento/miembro/{idMiembro}/{idEvento}": {
+            "put": {
+                "tags": ["Organizadores por Evento"],
+                "summary": "Actualizar Organizador del Evento por su ID",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "idMiembro",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    },
+                    {
+                        "name": "idEvento",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "idNuevoMiembro": {"type": "integer"}
+                                },
+                                "required": ["idNuevoMiembro"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Organizador actualizado"},
+                    "404": {"description": "Organizador no Existe"}
+                }
+            },
+            "delete": {
+                "tags": ["Organizadores por Evento"],
+                "summary": "Eliminar Organizador del Evento por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar Organizador del Evento por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "idMiembro",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "idEvento",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Organizador Eliminado del Evento Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/noticia":{
+            "get": {
+                "tags": ["Noticia"],
+                "summary": "Obtener la lista de todos las Noticias",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "ListarAllNoticias",
+                "responses": {
+                    "200": {
+                        "description": "Lista de Noticias",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_noticia": {
+                                                "type": "integer"
+                                            },
+                                            "titulo": {
+                                                "type": "string"
+                                            },
+                                            "Personas": {
+                                                "type": "string"
+                                            },
+                                            "descripcion": {
+                                                "type": "string"
+                                            },
+                                            "fecha_publicacion": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No hay Noticias",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/noticia/total":{
+            "get": {
+                "tags": ["Noticia"],
+                "summary": "Cantidad de todos las Noticias",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "getCountNoticias",
+                "responses": {
+                    "200": {
+                        "description": "Cantidad de Noticias",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/noticia/{id}":{
+            "put": {
+                "tags": ["Noticia"],
+                "summary": "Actualizar Noticia",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "integer"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "titulo": {"type": "string"},
+                                    "descripcion":{"type":"string"},
+                                    "fecha_publicacion":{"type":"string"}
+                                },
+                                "required": ["titulo","descripcion","fecha_publicacion"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Noticia actualizado"},
+                    "404": {"description": "Noticia no Existe"}
+                }
+            },
+            "delete": {
+                "tags": ["Noticia"],
+                "summary": "Eliminar Noticia por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar una Noticia por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Noticia Eliminado Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/noticia/persona/{id}":{
+            "get": {
+                "tags": ["Personas por Noticia"],
+                "summary": "Obtener los Personas por Id de la Noticia",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "GetPersonasByIdNotiicia",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id de la Noticia",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Noticia Encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Noticia no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/noticia/persona":{
+            "post": {
+                "tags": ["Personas por Noticia"],
+                "summary": "Crear una nueva Personas a la Noticia",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "idNoticia": {"type": "integer"},
+                                    "idPersona": {"type": "integer"}                
+                                },
+                                "required": ["idNoticia", "idPersona"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Persona Registrada a la Noticia"}
+                }
+            }
+        },
+        "/noticia/persona/{idPersona}/{idNoticia}":{
+            "delete": {
+                "tags": ["Personas por Noticia"],
+                "summary": "Eliminar Persona de la Noticia por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar Persona de la Notici por su ID",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "idPersona",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "idNoticia",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Persona Eliminada de la Noticia Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/miembros/logros/{id}":{
+            "get": {
+                "tags": ["Logros de los Miembros"],
+                "summary": "Obtener los Logros por del Miembro de la Promocion",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "operationId": "GetLogrosByIdMiembro",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del Miembro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Miembro con sus Logros Encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Miembro no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        },
+        "/miembros/logros":{
+            "post": {
+                "tags": ["Logros de los Miembros"],
+                "summary": "Crear una nuevo Logro al Miembro",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "idMiembro": {"type": "integer"},
+                                    "idLogro": {"type": "integer"},
+                                    "idGaleria": {"type": "integer"},
+                                    "fecha": {"type": "string"}         
+                                },
+                                "required": ["idMiembro", "idLogro","idGaleria","fecha"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Logro Registrado Correctamente al Miembro"}
+                }
+            }  
+        },
+        "/miembros/logros/{idLogro}/{idMiembro}":{
+            "delete": {
+                "tags": ["Logros de los Miembros"],
+                "summary": "Eliminar Logro del Miembro por su Id",
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "description": "Eliminar Logro del Miembro por su Id",
+                "operationId": "deleteById",
+                "parameters": [
+                    {
+                        "name": "idLogro",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "idMiembro",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logro Eliminado del Miembro Exitosamente",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "El Id no se Existe",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/aportaciones": {
@@ -676,6 +2366,7 @@
                 }
             }
         }
+
     },
     "components": {
         "securitySchemes": {
