@@ -31,6 +31,7 @@ class PersonaController
         $result =  $this->personaModel->getDataById($id);
         if ($result === null) {
             echo json_encode(["message" => "El ID $id No Existe"]);
+            return;
         }
         Response::json($result);
     }

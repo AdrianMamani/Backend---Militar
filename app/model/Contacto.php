@@ -51,8 +51,8 @@ class Contacto
             error_log("No Existe el ID $id");
             return null;
         }
-
-        return $stmt->execute();
+        $stmt->execute();
+        return true;
     }
 
     public function delete(int $id)
