@@ -2,10 +2,20 @@
 require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../model/InMemoriam.php';
 
+/**
+ * Controlador para gestionar registros en la tabla InMemoriam.
+ */
 class InMemoriamController
 {
+    /**
+     * Instancia del modelo InMemoriam.
+     * @var InMemoriam
+     */
     private $inMemoriam;
 
+     /**
+     * Constructor de la clase.
+     */
     public function __construct()
     {
         $db = new Database();
@@ -46,6 +56,12 @@ class InMemoriamController
         echo json_encode($data);
     }
   */
+
+    /**
+     * Lista todos los registros de InMemoriam.
+     * 
+     * @return void
+     */
     public function listAll()
     {
         $inMemoriams = $this->inMemoriam->getAll();
@@ -56,8 +72,14 @@ class InMemoriamController
         Response::json($inMemoriams);
     }
 
+    /**
+     * Crea un nuevo registro en InMemoriam.
+     * 
+     * @return void
+     */
     private function post()
     {
+        // Validación de datos
         if (!isset($_POST['nombre_miembro'], $_POST['fecha_fallecimiento'], $_POST['descripcion'])) {
             echo json_encode(["error" => "Faltan datos requeridos"]);
             http_response_code(400);
@@ -89,7 +111,7 @@ class InMemoriamController
                 exit;
             }
         }
-
+        // Creación del registro
         $result = $this->inMemoriam->create($nombre_miembro, $fecha_fallecimiento, $descripcion, $imagenRuta, $logros);
         if ($result) {
             echo json_encode([
@@ -110,6 +132,11 @@ class InMemoriamController
         }
     }
 
+    /**
+     * Actualiza un registro en InMemoriam.
+     * 
+     * @return void
+     */
     private function put()
     {
         $input = json_decode(file_get_contents("php://input"), true);
@@ -140,6 +167,11 @@ class InMemoriamController
         exit;
     }
 
+    /**
+     * Elimina un registro de InMemoriam.
+     * 
+     * @return void
+     */
     private function delete()
     {
         $input = json_decode(file_get_contents("php://input"), true);

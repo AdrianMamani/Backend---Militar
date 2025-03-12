@@ -1,15 +1,32 @@
 <?php
 require_once __DIR__ . '/../model/Interfaz.php';
 
+/**
+ * Controlador para la gestión de la interfaz.
+ */
 class InterfazController
 {
+    /**
+     * Instancia del modelo Interfaz.
+     * @var InterfazModel
+     */
     private $model;
 
+    /**
+     * Constructor de la clase.
+     * 
+     * @param Database $db Instancia de la base de datos.
+     */
     public function __construct(Database $db)
     {
         $this->model = new InterfazModel($db);
     }
 
+     /**
+     * Sube un archivo a la galería y lo guarda en la base de datos.
+     * 
+     * @return void
+     */
     public function subirArchivo()
     {
         header("Content-Type: application/json");
@@ -52,6 +69,11 @@ class InterfazController
         echo json_encode(['success' => $resultado, 'ruta' => $ruta_archivo], JSON_PRETTY_PRINT);
     }
 
+    /**
+     * Actualiza la información de una promoción en la base de datos.
+     * 
+     * @return void
+     */
     public function actualizarInformacion()
     {
         header("Content-Type: application/json");

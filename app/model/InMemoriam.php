@@ -1,15 +1,32 @@
 <?php
 require_once __DIR__ . '/../../config/Database.php';
 
+/**
+ * Modelo para gestionar los registros de la tabla InMemoriam.
+ */
 class InMemoriam
 {
+    /**
+     * Conexión a la base de datos.
+     * @var mysqli
+     */
     private $conn;
 
+    /**
+     * Constructor del modelo.
+     * 
+     * @param Database $db Instancia de la conexión a la base de datos.
+     */
     public function __construct(Database $db)
     {
         $this->conn = $db->getConexion();
     }
 
+    /**
+     * Obtiene todos los registros de la tabla InMemoriam con sus datos asociados.
+     * 
+     * @return array Lista de registros.
+     */
     public function getAll()
     {
         $sql = "SELECT im.*, m.nombres, m.fecha_nac, g.ruta_archivo AS imagen,
@@ -24,6 +41,12 @@ class InMemoriam
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    /**
+     * Obtiene un registro específico de la tabla InMemoriam por su ID.
+     * 
+     * @param int $id ID del registro a obtener.
+     * @return array|null Datos del registro o null si no se encuentra.
+     */
     public function getById($id)
     {
         $sql = "SELECT im.*, m.nombres, m.fecha_nac, g.ruta_archivo AS imagen,
@@ -42,6 +65,17 @@ class InMemoriam
         return $result->fetch_assoc();
     }
 
+     /**
+     * Crea un nuevo registro en la tabla InMemoriam y sus tablas relacionadas.
+     * 
+     * @param string $nombre_miembro Nombre del miembro.
+     * @param string $fecha_fallecimiento Fecha de fallecimiento.
+     * @param string $descripcion Descripción del registro.
+     * @param string|null $imagen Ruta de la imagen asociada (opcional).
+     * @param array|string $logros Lista de logros asociados.
+     * 
+     * @return bool Devuelve true si la inserción fue exitosa, false en caso de error.
+     */
     public function create($nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen, $logros)
     {
         if (!is_array($logros)) {
@@ -100,6 +134,17 @@ class InMemoriam
         }
     }
 
+    /**
+     * Actualiza un registro existente en la tabla InMemoriam.
+     * 
+     * @param int $id ID del registro a actualizar.
+     * @param string $nombre_miembro Nombre del miembro.
+     * @param string $fecha_fallecimiento Fecha de fallecimiento.
+     * @param string $descripcion Descripción del registro.
+     * @param string|null $imagen Ruta de la imagen asociada (opcional).
+     * 
+     * @return bool Devuelve true si la actualización fue exitosa, false en caso de error.
+     */
     public function update($id, $nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen)
     {
         $this->conn->begin_transaction();
@@ -133,6 +178,13 @@ class InMemoriam
         }
     }
 
+    /**
+     * Elimina un registro de la tabla InMemoriam por su ID.
+     * 
+     * @param int $id ID del registro a eliminar.
+     * 
+     * @return bool Devuelve true si la eliminación fue exitosa, false en caso de error.
+     */
     public function delete($id)
     {
         $this->conn->begin_transaction();

@@ -1,14 +1,27 @@
 <?php
-
+/**
+ * Clase Logro
+ * Maneja operaciones CRUD (Create, Read, Update, Delete) para la tabla `logro`.
+ */
 class Logro
 {
     private $db;
 
+    /**
+     * Constructor de la clase.
+     *
+     * @param Database $con Objeto de conexión a la base de datos.
+     */
     public function __construct(Database $con)
     {
         $this->db = $con->getConexion();
     }
 
+    /**
+     * Obtiene el total de logros en la base de datos.
+     *
+     * @return array|null Retorna un array con el número total de logros o null en caso de error.
+     */
     public function countLogro()
     {
         $query = "SELECT COUNT(id_logro) AS 'N° Total Logros' FROM logro;";
@@ -30,6 +43,11 @@ class Logro
         return $countLogro;
     }
 
+    /**
+     * Obtiene todos los registros de la tabla `logro`.
+     *
+     * @return array|null Retorna un array con los registros o null si no hay datos.
+     */
     public function getData()
     {
         $query = "SELECT * FROM logro;";
@@ -51,6 +69,13 @@ class Logro
         return $listMiembro;
     }
 
+    /**
+     * Inserta un nuevo logro en la base de datos.
+     *
+     * @param string $titulo Título del logro.
+     * @param string $descripcion Descripción del logro.
+     * @return bool Retorna true si la operación fue exitosa, false en caso contrario.
+     */
     public function postData($titulo, $descripcion)
     {
 
@@ -71,8 +96,14 @@ class Logro
         return true;
     }
 
-
-
+    /**
+     * Actualiza un logro existente en la base de datos.
+     *
+     * @param int $id ID del logro a actualizar.
+     * @param string $titulo Nuevo título del logro.
+     * @param string $descripcion Nueva descripción del logro.
+     * @return bool Retorna true si la operación fue exitosa, false en caso contrario.
+     */
     public function putData(int $id, $titulo, $descripcion)
     {
         $query = "UPDATE logro SET  titulo=? , descripcion=? WHERE id_logro = ?";
@@ -90,6 +121,13 @@ class Logro
         return true;
     }
 
+    /**
+     * Elimina un logro de la base de datos.
+     *
+     * @param int $id ID del logro a eliminar.
+     * @return bool|null Retorna true si la operación fue exitosa, false si hubo un error, 
+     * o null si el registro no fue encontrado.
+     */
     public function deleteData(int $id)
     {
         $query = "DELETE FROM logro WHERE  id_logro = ?";

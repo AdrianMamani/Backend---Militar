@@ -1,16 +1,32 @@
 <?php
 
 require_once(__DIR__ . "/../model/Logro.php");
+/**
+ * Controlador para la gestión de logros.
+ */
 class LogroController
 {
+    /**
+     * Instancia del modelo Logro.
+     * @var Logro
+     */
     private $logroModel;
 
+     /**
+     * Constructor de la clase.
+     * 
+     * @param Database $db Instancia de la base de datos.
+     */
     public function __construct(Database $db)
     {
         $this->logroModel = new Logro($db);
     }
 
-
+    /**
+     * Cuenta el total de logros registrados en la base de datos.
+     * 
+     * @return void
+     */
     public function countTotalLogro()
     {
         $cantidadLogro = $this->logroModel->countLogro();
@@ -22,6 +38,11 @@ class LogroController
         Response::json($cantidadLogro);
     }
 
+    /**
+     * Lista todos los logros almacenados en la base de datos.
+     * 
+     * @return void
+     */
     public function listLogros()
     {
         $resultLogro = $this->logroModel->getData();
@@ -33,6 +54,11 @@ class LogroController
         }
     }
 
+    /**
+     * Crea un nuevo logro en la base de datos.
+     * 
+     * @return void
+     */
     public function createLogro()
     {
         $data = json_decode(file_get_contents("php://input"), true);
@@ -49,6 +75,14 @@ class LogroController
         Response::json(["message" => "Logro Guardado Exitosamente."]);
     }
 
+    /**
+     * Actualiza un logro existente en la base de datos.
+     * 
+     * @param array $authData Datos de autenticación del usuario.
+     * @param int $id Identificador del logro a actualizar.
+     * 
+     * @return void
+     */
     public function update($authData, $id)
     {
         $id = intval($id);
@@ -71,7 +105,14 @@ class LogroController
         }
     }
 
-
+    /**
+     * Elimina un logro de la base de datos por su ID.
+     * 
+     * @param array $authData Datos de autenticación del usuario.
+     * @param int $id Identificador del logro a eliminar.
+     * 
+     * @return void
+     */
     public function deleteById($authData, $id)
     {
         $id = intval($id);
