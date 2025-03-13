@@ -31,22 +31,20 @@ class Asociado
         return $result->fetch_assoc();
     }
 
-    public function create($nombre_completo, $lugar, $fecha_creacion, $fecha_modificacion)
-    {
-        $query = "INSERT INTO Asociado (nombre_completo, lugar, fecha_creacion, fecha_modificacion) VALUES (?, ?, ?, ?)";
+    public function create($nombre_completo, $lugar): bool|int|string {
+        $query = "INSERT INTO Asociado (nombre_completo, lugar) VALUES (?, ?)";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param("ssss", $nombre_completo, $lugar, $fecha_creacion, $fecha_modificacion);
+        $stmt->bind_param("ss", $nombre_completo, $lugar);
         if ($stmt->execute()) {
             return $this->db->insert_id;
         }
         return false;
     }
 
-    public function update(int $id, $nombre_completo, $lugar, $fecha_creacion, $fecha_modificacion)
-    {
-        $query = "UPDATE Asociado SET nombre_completo = ?, lugar = ?, fecha_creacion = ?, fecha_modificacion = ? WHERE id_asociado = ?";
+    public function update($id, $nombre_completo, $lugar) {
+        $query = "UPDATE Asociado SET nombre_completo = ?, lugar = ? WHERE id_asociado = ?";
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param("ssssi", $nombre_completo, $lugar, $fecha_creacion, $fecha_modificacion, $id);
+        $stmt->bind_param("ssi", $nombre_completo, $lugar, $id);
         return $stmt->execute();
     }
 

@@ -10,9 +10,8 @@ class Aportacion
         $this->db = $db->getConexion();
     }
 
-    public function getAll(): array
-    {
-        $query = "SELECT * FROM Aportacion";
+    public function getAll(): array {
+        $query = "SELECT * FROM vista_aportaciones";
         $result = $this->db->query($query);
 
         $aportaciones = [];
@@ -36,56 +35,48 @@ class Aportacion
         return $aportacion ?: null;
     }
 
-    public function create($id_categoria, $id_tesorero, $montos, $total, $fecha_creacion, $fecha_modificacion)
-    {
-        $query = "INSERT INTO Aportacion (id_categoria, id_tesorero, monto_ene, monto_feb, monto_mar, monto_abr, monto_may, 
-                monto_jun, monto_jul, monto_ago, monto_sep, monto_oct, monto_nov, monto_dic, total, fecha_creacion, fecha_modificacion) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+    public function create($id_categoria, $id_tesorero, $montos, $lugar) {
+        $query = "CALL insertarAportacion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @id_aportacion)";
+        $lugar = $lugar ?? '';
+    
+        // Preparar la consulta
         $stmt = $this->db->prepare($query);
         $stmt->bind_param(
-            "ii" . str_repeat("d", 12) . "dss",
-            $id_categoria,
-            $id_tesorero,
-            $montos['ene'],
-            $montos['feb'],
-            $montos['mar'],
-            $montos['abr'],
-            $montos['may'],
-            $montos['jun'],
-            $montos['jul'],
-            $montos['ago'],
-            $montos['sep'],
-            $montos['oct'],
-            $montos['nov'],
-            $montos['dic'],
-            $total,
-            $fecha_creacion,
-            $fecha_modificacion
+            "ii" . str_repeat("d", 12) . "s",
+            $id_categoria, $id_tesorero,
+            $montos['ene'], $montos['feb'], $montos['mar'], $montos['abr'], 
+            $montos['may'], $montos['jun'], $montos['jul'], $montos['ago'], 
+            $montos['sep'], $montos['oct'], $montos['nov'], $montos['dic'],
+            $lugar
         );
-
-
+    
+        // Ejecutar el procedimiento
         if ($stmt->execute()) {
-            return $this->db->insert_id;
+            // Obtener el resultado del parámetro de salida
+            $result = $this->db->query("SELECT @id_aportacion as id");
+            $row = $result->fetch_assoc();
+            return $row['id'] ?? false;
         }
+    
         return false;
     }
 
-    public function update(int $id, int $id_categoria, int $id_tesorero, array $montos, string $lugar, float $total): bool
-    {
-        $query = "UPDATE Aportacion SET id_categoria = ?, id_tesorero = ?, monto_ene = ?, monto_feb = ?, monto_mar = ?, monto_abr = ?, monto_may = ?, monto_jun = ?, monto_jul = ?, monto_ago = ?, monto_sep = ?, monto_oct = ?, monto_nov = ?, monto_dic = ?, lugar = ?, total = ?, fecha_modificacion = NOW() WHERE id_aportacion = ?";
+    public function update(int $id, int $id_categoria, int $id_tesorero, array $montos, ?string $lugar): bool {
+        $query = "CALL actualizarAportacion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
         $stmt = $this->db->prepare($query);
-
-        // Combina todos los parámetros en un solo array
+    
+        // Si $lugar es null, lo convertimos a un string vacío
+        $lugar = $lugar ?? '';
+    
         $params = array_merge(
-            [$id_categoria, $id_tesorero],
-            array_values($montos), // Asegúrate de que $montos tenga exactamente 12 elementos
-            [$lugar, $total, $id]
+            [$id, $id_categoria, $id_tesorero],
+            array_values($montos),
+            [$lugar]
         );
-
-        // Usa el desempaquetado en una única llamada
-        $stmt->bind_param("iidddddddddddsdi", ...$params);
-
+    
+        $stmt->bind_param("iiidddddddddddds", ...$params);
+    
         $success = $stmt->execute();
         $stmt->close();
         return $success;

@@ -1,6 +1,14 @@
 <?php
 require_once __DIR__ . "/../model/User.php";
 require_once __DIR__ . "/../utils/JwtHandler.php";
+
+/** 
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="Your super Application API",
+ *      version="1.0.0",
+ * )
+ */
 class UserController
 {
     private $userModel;
@@ -10,7 +18,6 @@ class UserController
         $this->userModel = new UserModel($db);
     }
 
-    // Obtener todos los usuarios
     public function getAll()
     {
         $users = $this->userModel->getAll();

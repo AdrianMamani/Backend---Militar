@@ -141,8 +141,8 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "username": {"type": "string"},
-                                    "password": {"type": "string"}
+                                    "username": {"type": "string", "example": "carlos"},
+                                    "password": {"type": "string", "example": "123456"}
                                 },
                                 "required": ["username", "password"]
                             }
@@ -179,9 +179,9 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "username": {"type": "string"},
-                                    "password": {"type": "string"},
-                                    "rol": {"type": "string"}
+                                    "username": {"type": "string","example": "Raul"},
+                                    "password": {"type": "string","example": "@raul1559"},
+                                    "rol": {"type": "string","example": "Admin"}
                                 },
                                 "required": ["username", "password", "rol"]
                             }
@@ -409,6 +409,270 @@
                             }
                         }
                     }
+                }
+            }
+        },
+        "/aportaciones": {
+            "get": {
+                "tags": ["Aportaciones"],
+                "summary": "Obtener todas las aportaciones",
+                "security": [{"bearerAuth": []}],
+                "responses": {
+                   "200": {"description": "Datos de la aportación"},
+                   "204": {"description": "No hay Aportaciones"},
+                   "500": {"description": "Error en el Servidor"}
+                }
+            },
+            "post": {
+                "tags": ["Aportaciones"],
+                "summary": "Crear nueva aportación con asociado",
+                "security": [{"bearerAuth": []}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "asociado": {
+                                        "type": "object",
+                                        "properties": {
+                                            "nombre_completo": {"type": "string","example": "Alberto Rojas"},
+                                            "lugar": {"type": "string","example": "Trujillo"}
+                                        },
+                                        "required": ["nombre_completo", "lugar"]
+                                    },
+                                    "aportacion": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id_categoria": {"type": "integer","example": 1},
+                                            "id_tesorero": {"type": "integer"},"example": 1,
+                                           "montos": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ene": { "type": "number","example": 505.3 },
+                                                    "feb": { "type": "number","example": 505.3 },
+                                                    "mar": { "type": "number","example": 505.3 },
+                                                    "abr": { "type": "number","example": 505.3 },
+                                                    "may": { "type": "number","example": 505.3 },
+                                                    "jun": { "type": "number","example": 505.3 },
+                                                    "jul": { "type": "number","example": 505.3 },
+                                                    "ago": { "type": "number","example": 505.3 },
+                                                    "sep": { "type": "number","example": 505.3 },
+                                                    "oct": { "type": "number","example": 505.3 },
+                                                    "nov": { "type": "number","example": 505.3 },
+                                                    "dic": { "type": "number","example": 505.3 }
+                                                },
+                                                "description": "Objeto con los montos de cada mes"
+                                            }
+                                        },
+                                        "required": ["id_categoria", "id_tesorero", "montos", "total"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Creado Correctamente"},
+                    "400": {"description": "Faltan datos requeridos"},
+                    "500": {"description": "Error en el servidor"}
+                }
+            }
+        },
+        "/aportaciones/{id}": {
+            "get": {
+                "tags": ["Aportaciones"],
+                "summary": "Obtener aportación por ID",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {"type": "integer"},
+                    "description": "Id de Aportacion"
+                }],
+                "responses": {
+                    "200": {"description": "Datos de la aportación"},
+                    "404": {"description": "Aportacion no Encontrada"},
+                    "500": {"description": "Error en el Servidor"}
+                }
+            },
+            "patch": {
+                "tags": ["Aportaciones"],
+                "summary": "Actualización parcial de aportación",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {"type": "integer"},
+                    "description": "Id de Aportacion"
+                }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id_categoria": {"type": "integer","example": 1},
+                                    "id_tesorero": {"type": "integer","example": 1},
+                                    "montos": {
+                                        "type": "object",
+                                        "properties": {
+                                            "ene": {"type": "number","example": 505.30},
+                                            "feb": {"type": "number","example": 480.00},
+                                            "mar": {"type": "number","example": 205.50}
+                                        }
+                                    },
+                                    "lugar": {"type": "string","example":"Lima"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Aportación actualizada parcialmente"},
+                    "404": {"description": "Registro no encontrado"},
+                    "500": {"description": "Error en el Servidor"}
+                }
+            },
+            "delete": {
+                "tags": ["Aportaciones"],
+                "summary": "Eliminar aportación",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {"type": "integer"},
+                    "description": "Id de Aportacion"
+                }],
+                "responses": {
+                    "200": {"description": "Aportación eliminada"},
+                    "500": {"description": "Error en el Servidor"}
+                }
+            }
+        },
+        "/deudas": {
+            "get": {
+                "tags": ["Deudas"],
+                "summary": "Obtener todas las deudas",
+                "security": [{"bearerAuth": []}],
+                "responses": {
+                    "200": {"description": "Datos de Deudas"},
+                    "204": {"description": "No hay Deudas"},
+                    "500": {"description": "Error en el Servidor"}
+                }
+            },
+            "post": {
+                "tags": ["Deudas"],
+                "summary": "Crear nueva deuda",
+                "security": [{"bearerAuth": []}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fecha": {
+                                        "type": "string",
+                                        "example": "Deuda 2024"
+                                    },
+                                    "monto": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 150.50
+                                    },
+                                    "id_asociado": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "required": ["fecha", "monto", "id_asociado"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Deuda creada exitosamente"},
+                    "400": {"description": "Faltan datos requeridos"},
+                    "500": {"description": "Error al crear la deuda"}
+                }
+            }
+        },
+        "/deudas/{id}": {
+            "get": {
+                "tags": ["Deudas"],
+                "summary": "Obtener deuda por ID",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "description": "Id de Asociado"
+                }],
+                "responses": {
+                    "200": {"description": "Datos de Deudas"},
+                    "400": {"description": "Datos incompletos"},
+                    "404": {"description": "Deuda no encontrada"},
+                    "500": {"description": "Error en el Servidor"}
+                }
+            },
+            "put": {
+                "tags": ["Deudas"],
+                "summary": "Actualizar deuda completa",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {"type": "integer"},
+                    "description":"Id de Deuda"
+                }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fecha": {"type": "string", "example":"Deuda 2025"},
+                                    "monto": {"type": "number", "example": 250.50},
+                                    "id_asociado": {"type": "integer", "example": 13 }
+                                },
+                                "required": ["fecha", "monto", "id_asociado"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Deuda actualizada"},
+                    "400": {"description": "Datos incompletos"},
+                    "404": {"description": "Deuda no encontrada"},
+                    "500": {"description": "Error en el Servidor"}
+                }
+            },
+            "delete": {
+                "tags": ["Deudas"],
+                "summary": "Eliminar deuda",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {"type": "integer"},
+                    "description": "Id de Deuda"
+                }],
+                "responses": {
+                    "200": {"description": "Deuda eliminada"},
+                    "404": {"description": "Deuda no encontrada"},
+                    "500": {"description": "Error al eliminar"}
                 }
             }
         }

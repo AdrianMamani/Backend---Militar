@@ -21,11 +21,8 @@ class AportacionController
     }
 
     // GET /aportaciones/{id}
-    public function getById($authData, $id)
-    {
+    public function getById($userData, $id) {
         $id = intval($id);
-        error_log("ID recibido en el controlador: $id");
-
         $aportacion = $this->aportacionModel->getById($id);
         header("Content-Type: application/json");
         if ($aportacion) {
@@ -35,49 +32,46 @@ class AportacionController
             echo json_encode(["error" => "Aportación no encontrada"]);
         }
     }
-    public function create()
-    {
+
+    // POST /aportaciones
+    public function create() {
         $data = json_decode(file_get_contents("php://input"), true);
-
-        // Validar que existan los datos para el asociado y la aportación
-        if (!isset($data['asociado']) || !isset($data['aportacion'])) {
-            Response::json(['error' => 'Faltan datos de asociado o aportación'], 400);
+    
+        if (!isset($data['aportacion'])) {
+            Response::json(['error' => 'Faltan datos de la aportación'], 400);
             return;
         }
-
-        // Validar datos del asociado
-        $asociadoData = $data['asociado'];
-        if (
-            !isset($asociadoData['nombre_completo']) ||
-            !isset($asociadoData['lugar']) ||
-            !isset($asociadoData['fecha_creacion']) ||
-            !isset($asociadoData['fecha_modificacion'])
-        ) {
-            Response::json(['error' => 'Faltan datos requeridos para el asociado'], 400);
+    
+        if (!isset($data['asociado']) && !isset($data['id_asociado'])) {
+            Response::json(['error' => 'Debe proporcionar un asociado o un id_asociado'], 400);
             return;
         }
-
-        // Crear el asociado y obtener su ID
-        $id_asociado = $this->asociadoModel->create(
-            $asociadoData['nombre_completo'],
-            $asociadoData['lugar'],
-            $asociadoData['fecha_creacion'],
-            $asociadoData['fecha_modificacion']
-        );
-        if (!$id_asociado) {
-            Response::json(['error' => 'Error al crear el asociado'], 500);
-            return;
+    
+        if (isset($data['asociado'])) {
+            $asociadoData = $data['asociado'];
+            if (!isset($asociadoData['nombre_completo']) || !isset($asociadoData['lugar'])) {
+                Response::json(['error' => 'Faltan datos requeridos para el asociado'], 400);
+                return;
+            }
+    
+            $id_asociado = $this->asociadoModel->create(
+                $asociadoData['nombre_completo'],
+                $asociadoData['lugar']
+            );
+    
+            if (!$id_asociado) {
+                Response::json(['error' => 'Error al crear el asociado'], 500);
+                return;
+            }
+        } else {
+            $id_asociado = $data['id_asociado'];
         }
-
-        // Validar datos de la aportación
+    
         $aportacionData = $data['aportacion'];
         if (
             !isset($aportacionData['id_categoria']) ||
             !isset($aportacionData['id_tesorero']) ||
-            !isset($aportacionData['montos']) ||
-            !isset($aportacionData['total']) ||
-            !isset($aportacionData['fecha_creacion']) ||
-            !isset($aportacionData['fecha_modificacion'])
+            !isset($aportacionData['montos'])
         ) {
             Response::json(['error' => 'Faltan datos requeridos para la aportación'], 400);
             return;
@@ -88,28 +82,80 @@ class AportacionController
             $aportacionData['id_categoria'],
             $aportacionData['id_tesorero'],
             $aportacionData['montos'],
-            $aportacionData['total'],
-            $aportacionData['fecha_creacion'],
-            $aportacionData['fecha_modificacion']
+            $aportacionData['lugar']
         );
+    
         if (!$id_aportacion) {
             Response::json(['error' => 'Error al crear la aportación'], 500);
             return;
         }
-
-        // Asociar el aportación con el asociado
-        $association = $this->asociadoModel->associateAportacion($id_asociado, $id_aportacion);
-        if (!$association) {
+    
+        // Asociar la aportación con el asociado
+        if (!$this->asociadoModel->associateAportacion($id_asociado, $id_aportacion)) {
             Response::json(['error' => 'Error al asociar la aportación con el asociado'], 500);
             return;
         }
-
+    
+        // Respuesta exitosa
         Response::json([
-            'message' => 'Aportación y asociado creados y asociados exitosamente',
+            'message' => 'Created successfully',
             'id_asociado' => $id_asociado,
             'id_aportacion' => $id_aportacion
         ]);
     }
+
+    // PATCH /aportaciones/{id}
+    public function updateArgs($authData, $id) {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $id = intval($id);
+        // 1. Obtener el registro actual de la base de datos
+        $aportacionActual = $this->aportacionModel->getById($id);
+        if (!$aportacionActual) {
+            http_response_code(404);
+            echo json_encode(["error" => "Registro no encontrado"]);
+            return;
+        }
+    
+        // 2. Combinar datos existentes con los nuevos (actualización parcial)
+        $id_categoria = $data['id_categoria'] ?? $aportacionActual['id_categoria'];
+        $id_tesorero = $data['id_tesorero'] ?? $aportacionActual['id_tesorero'];
+        $montos = $data['montos'];
+        // Manejar montos (si llegan, actualizas, sino, mantienes)
+        $montos = [
+            $montos['ene'] ?? $aportacionActual['monto_ene'],
+            $montos['feb'] ?? $aportacionActual['monto_feb'],
+            $montos['mar'] ?? $aportacionActual['monto_mar'],
+            $montos['abr'] ?? $aportacionActual['monto_abr'],
+            $montos['may'] ?? $aportacionActual['monto_may'],
+            $montos['jun'] ?? $aportacionActual['monto_jun'],
+            $montos['jul'] ?? $aportacionActual['monto_jul'],
+            $montos['ago'] ?? $aportacionActual['monto_ago'],
+            $montos['sep'] ?? $aportacionActual['monto_sep'],
+            $montos['oct'] ?? $aportacionActual['monto_oct'],
+            $montos['nov'] ?? $aportacionActual['monto_nov'],
+            $montos['dic'] ?? $aportacionActual['monto_dic']
+        ];
+    
+        $lugar = $data['lugar'] ?? $aportacionActual['lugar'];
+    
+        // 3. Llamar al modelo para hacer el update
+        $success = $this->aportacionModel->update(
+            $id,
+            $id_categoria,
+            $id_tesorero,
+            $montos,
+            $lugar
+        );
+    
+        header("Content-Type: application/json");
+        if ($success) {
+            echo json_encode(["message" => "Aportación actualizada parcialmente"]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["error" => "Error al actualizar la aportación"]);
+        }
+    }
+    
 
     // PUT/PATCH /aportaciones/{id}
     public function update($authData, $id)
@@ -118,19 +164,44 @@ class AportacionController
         error_log("ID recibido en el controlador: $id");
 
         $data = json_decode(file_get_contents("php://input"), true);
-        if (!isset($data['id_categoria'], $data['id_tesorero'], $data['montos'], $data['lugar'], $data['total'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Faltan datos requeridos"]);
+
+        $aportacionActual = $this->aportacionModel->getById($id);
+        if (!$aportacionActual) {
+            http_response_code(404);
+            echo json_encode(["error" => "Registro no encontrado"]);
             return;
         }
+        
+        $id_categoria = isset($data['id_categoria']) ? $data['id_categoria'] : $aportacionActual['id_categoria'];
+        $id_tesorero = isset($data['id_tesorero']) ? $data['id_tesorero'] : $aportacionActual['id_tesorero'];
+        
+        $montos = isset($data['montos']) && is_array($data['montos']) ? $data['montos'] : [
+            $aportacionActual['monto_ene'],
+            $aportacionActual['monto_feb'],
+            $aportacionActual['monto_mar'],
+            $aportacionActual['monto_abr'],
+            $aportacionActual['monto_may'],
+            $aportacionActual['monto_jun'],
+            $aportacionActual['monto_jul'],
+            $aportacionActual['monto_ago'],
+            $aportacionActual['monto_sep'],
+            $aportacionActual['monto_oct'],
+            $aportacionActual['monto_nov'],
+            $aportacionActual['monto_dic']
+        ];
+        
+        $lugar = isset($data['lugar']) ? $data['lugar'] : $aportacionActual['lugar'];
+        $total = isset($data['total']) ? $data['total'] : $aportacionActual['total'];
+
         $success = $this->aportacionModel->update(
             $id,
-            $data['id_categoria'],
-            $data['id_tesorero'],
-            $data['montos'],
-            $data['lugar'],
-            $data['total']
+            $id_categoria,
+            $id_tesorero,
+            $montos,
+            $lugar,
+            $total
         );
+        
         header("Content-Type: application/json");
         if ($success) {
             echo json_encode(["message" => "Aportación actualizada"]);
@@ -141,12 +212,10 @@ class AportacionController
     }
 
     // DELETE /aportaciones/{id}
-    public function delete($authData, $id)
-    {
+    public function delete($authData, $id) {
         $id = intval($id);
-        error_log("ID recibido en el controlador: $id");
-
         $success = $this->aportacionModel->delete($id);
+        
         header("Content-Type: application/json");
         if ($success) {
             echo json_encode(["message" => "Aportación eliminada"]);

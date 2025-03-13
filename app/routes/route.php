@@ -17,6 +17,7 @@ require_once __DIR__ . '/../controller/MiembrosLogrosController.php';
 require_once __DIR__ . '/../controller/CategoriaController.php';
 require_once __DIR__ . '/../controller/TesoreroController.php';
 require_once __DIR__ . '/../controller/InMemoriamController.php';
+require_once __DIR__ . '/../controller/DeudaController.php';
 require_once __DIR__ . '/../controller/InterfazController.php';
 
 
@@ -46,7 +47,7 @@ $userController = new UserController($db);
 $categoriaController  = new CategoriaController($db);
 $inMemoriamController = new InMemoriamController($db);
 $interfazController = new InterfazController($db);
-
+$deudasController = new DeudaController($db);
 
 
 // -----------------------
@@ -134,11 +135,24 @@ $router->addRoute('DELETE', '/miembros/logros/:idLogro/:idMiembro', [$miembrosLo
 // Rutas para Aportación
 // -----------------------
 $aportacionController = new AportacionController($db);
-$router->addRoute('GET', '/aportaciones', [$aportacionController, 'getAll'], true);
-$router->addRoute('GET', '/aportaciones/:id', [$aportacionController, 'getById'], true);
-$router->addRoute('POST', '/aportaciones', [$aportacionController, 'create'], true);
-$router->addRoute('PUT', '/aportaciones/:id', [$aportacionController, 'update'], true);
-$router->addRoute('DELETE', '/aportaciones/:id', [$aportacionController, 'delete'], true);
+$router->addRoute('GET', '/aportaciones', [$aportacionController, 'getAll'],true);
+$router->addRoute('GET', '/aportaciones/:id', [$aportacionController, 'getById'],true);
+$router->addRoute('POST', '/aportaciones', [$aportacionController, 'create'],true);
+$router->addRoute('PUT', '/aportaciones/:id', [$aportacionController, 'update'],true);
+$router->addRoute('PATCH', '/aportaciones/:id', [$aportacionController, 'updateArgs'],true);
+$router->addRoute('DELETE', '/aportaciones/:id', [$aportacionController, 'delete'],true);
+
+
+// -----------------------
+// Rutas para Deudas
+// -----------------------
+$aportacionController = new AportacionController($db);
+$router->addRoute('GET', '/deudas', [$deudasController, 'getAll'],true);
+$router->addRoute('POST', '/deudas', [$deudasController, 'create'],true);
+$router->addRoute('GET', '/deudas/:id', [$deudasController, 'getById'],true);
+$router->addRoute('PUT', '/deudas/:id', [$deudasController, 'update'],true);
+$router->addRoute('DELETE', '/deudas/:id', [$deudasController, 'delete'],true);
+
 
 // -----------------------
 // Rutas para Asociado
