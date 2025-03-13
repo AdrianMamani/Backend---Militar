@@ -760,7 +760,6 @@ END $$
 
 DELIMITER ;
 
-
 DELIMITER $$
 CREATE PROCEDURE verDeudaAsociado (IN a_id INT)   
 BEGIN 
