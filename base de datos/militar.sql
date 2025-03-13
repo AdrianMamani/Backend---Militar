@@ -371,9 +371,9 @@ SELECT
     a.nombre_completo AS nombre_completo,
     a.lugar AS lugar
 FROM 
-    db_militar.asociado_deuda ad
+    asociado_deuda ad
 JOIN 
-    db_militar.asociado a ON ad.id_asociado = a.id_asociado;
+    asociado a ON ad.id_asociado = a.id_asociado;
 
 CREATE VIEW listarAportaciones AS 
 SELECT 
@@ -396,13 +396,13 @@ SELECT
     a.total AS total,
     asoc.lugar AS lugar
 FROM 
-    db_militar.aportacion a
+    aportacion a
 JOIN 
-    db_militar.tesorero t ON a.id_tesorero = t.id_tesorero
+    tesorero t ON a.id_tesorero = t.id_tesorero
 JOIN 
-    db_militar.aportaciones_asociados aa ON a.id_aportacion = aa.id_aportacion
+    aportaciones_asociados aa ON a.id_aportacion = aa.id_aportacion
 JOIN 
-    db_militar.asociado asoc ON aa.id_asociado = asoc.id_asociado;
+    asociado asoc ON aa.id_asociado = asoc.id_asociado;
 
 # PROCEDIMIENTOS ALMACENADOS 
 
