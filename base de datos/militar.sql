@@ -363,9 +363,46 @@ INSERT INTO noticia_persona (id_noticia, id_persona) VALUES (2,5);
 
 -- vistas
 
-CREATE VIEW listarDeudasAsociados  AS SELECT `ad`.`id_deuda` AS `id_deuda`, `ad`.`fecha` AS `fecha`, `ad`.`monto` AS `monto`, `a`.`nombre_completo` AS `nombre_completo`, `a`.`lugar` AS `lugar` FROM (`asociado_deuda` `ad` join `asociado` `a` on(`ad`.`id_asociado` = `a`.`id_asociado`)) ;
+CREATE VIEW listarDeudasAsociados AS 
+SELECT 
+    ad.id_deuda AS id_deuda,
+    ad.monto AS monto,
+    ad.fecha AS fecha,
+    a.nombre_completo AS nombre_completo,
+    a.lugar AS lugar
+FROM 
+    db_militar.asociado_deuda ad
+JOIN 
+    db_militar.asociado a ON ad.id_asociado = a.id_asociado;
 
-CREATE VIEW listarAportaciones  AS SELECT `a`.`id_aportacion` AS `id`, `t`.`nombre_completo` AS `nombre_tesorero`,`asoc`.`nombre_completo` AS `nombre_asociado`,`a`.`monto_ene` AS `monto_ene`,`a`.`monto_feb` AS `monto_feb`,`a`.`monto_mar` AS `monto_mar`,`a`.`monto_abr` AS `monto_abr`,`a`.`monto_may` AS `monto_may`,`a`.`monto_jun` AS `monto_jun`,`a`.`monto_jul` AS `monto_jul`,`a`.`monto_ago` AS `monto_ago`,`a`.`monto_sep` AS `monto_sep`,`a`.`monto_oct` AS `monto_oct`,`a`.`monto_nov` AS `monto_nov`,`a`.`monto_dic` AS `monto_dic`,`a`.`total` AS `total`,`a`.`lugar` AS `lugar`,`a`.`fecha_creacion` AS `fecha_creacion`,`a`.`fecha_modificacion` AS `fecha_modificacion` from (((`db_militar`.`aportacion` `a` join `db_militar`.`tesorero` `t` on(`a`.`id_tesorero` = `t`.`id_tesorero`)) join `db_militar`.`aportaciones_asociados` `aa` on(`a`.`id_aportacion` = `aa`.`id_aportacion`)) join `db_militar`.`asociado` `asoc` on(`aa`.`id_asociado` = `asoc`.`id_asociado`));
+CREATE VIEW listarAportaciones AS 
+SELECT 
+    a.id_aportacion AS id,
+    a.id_aportacion AS id_aportacion,
+    t.nombre_completo AS nombre_tesorero,
+    asoc.nombre_completo AS nombre_asociado,
+    a.monto_ene AS monto_ene,
+    a.monto_feb AS monto_feb,
+    a.monto_mar AS monto_mar,
+    a.monto_abr AS monto_abr,
+    a.monto_may AS monto_may,
+    a.monto_jun AS monto_jun,
+    a.monto_jul AS monto_jul,
+    a.monto_ago AS monto_ago,
+    a.monto_sep AS monto_sep,
+    a.monto_oct AS monto_oct,
+    a.monto_nov AS monto_nov,
+    a.monto_dic AS monto_dic,
+    a.total AS total,
+    asoc.lugar AS lugar
+FROM 
+    db_militar.aportacion a
+JOIN 
+    db_militar.tesorero t ON a.id_tesorero = t.id_tesorero
+JOIN 
+    db_militar.aportaciones_asociados aa ON a.id_aportacion = aa.id_aportacion
+JOIN 
+    db_militar.asociado asoc ON aa.id_asociado = asoc.id_asociado;
 
 # PROCEDIMIENTOS ALMACENADOS 
 
