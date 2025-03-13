@@ -2365,14 +2365,494 @@
                     "500": {"description": "Error al eliminar"}
                 }
             }
+        },
+        "/asociados": {
+            "get": {
+                "tags": ["Asociados"],
+                "summary": "Obtener todos los asociados",
+                "security": [{"bearerAuth": []}],
+                "responses": {
+                    "200": {
+                        "description": "Lista de asociados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"$ref": "#/components/schemas/Asociado"}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Asociados"],
+                "summary": "Crear nuevo asociado",
+                "security": [{"bearerAuth": []}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AsociadoInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {"$ref": "#/components/responses/CreatedAsociado"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
+        },
+        "/asociados/{id}": {
+            "get": {
+                "tags": ["Asociados"],
+                "summary": "Obtener asociado por ID",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"$ref": "#/components/responses/AsociadoResponse"},
+                    "404": {"$ref": "#/components/responses/NotFound"}
+                }
+            },
+            "put": {
+                "tags": ["Asociados"],
+                "summary": "Actualizar asociado completo",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AsociadoInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Asociado actualizado"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            },
+            "delete": {
+                "tags": ["Asociados"],
+                "summary": "Eliminar asociado",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"description": "Asociado eliminado"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
+        },
+        "/categorias": {
+            "get": {
+                "tags": ["Categorías"],
+                "summary": "Obtener todas las categorías",
+                "security": [{"bearerAuth": []}],
+                "responses": {
+                    "200": {
+                        "description": "Lista de categorías",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"$ref": "#/components/schemas/Categoria"}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Categorías"],
+                "summary": "Crear nueva categoría",
+                "security": [{"bearerAuth": []}],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nombre": {"type": "string"},
+                                    "descripcion": {"type": "string"}
+                                },
+                                "required": ["nombre", "descripcion"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Categoría creada"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
+        },
+        "/categorias/{id}": {
+            "get": {
+                "tags": ["Categorías"],
+                "summary": "Obtener categoría por ID",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"$ref": "#/components/responses/CategoriaResponse"},
+                    "404": {"$ref": "#/components/responses/NotFound"}
+                }
+            },
+            "put": {
+                "tags": ["Categorías"],
+                "summary": "Actualizar categoría",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nombre": {"type": "string"},
+                                    "descripcion": {"type": "string"}
+                                },
+                                "required": ["nombre", "descripcion"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Categoría actualizada"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            },
+            "delete": {
+                "tags": ["Categorías"],
+                "summary": "Eliminar categoría",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"description": "Categoría eliminada"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
+        },
+        "/tesoreros": {
+            "get": {
+                "tags": ["Tesoreros"],
+                "summary": "Obtener todos los tesoreros",
+                "security": [{"bearerAuth": []}],
+                "responses": {
+                    "200": {
+                        "description": "Lista de tesoreros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"$ref": "#/components/schemas/Tesorero"}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Tesoreros"],
+                "summary": "Crear nuevo tesorero con contacto",
+                "security": [{"bearerAuth": []}],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "num_contacto": {"type": "string"},
+                                    "correo": {"type": "string", "format": "email"},
+                                    "lugar": {"type": "string"},
+                                    "nombre_completo": {"type": "string"}
+                                },
+                                "required": ["num_contacto", "correo", "lugar", "nombre_completo"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Tesorero creado"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
+        },
+        "/tesoreros/{id}": {
+            "get": {
+                "tags": ["Tesoreros"],
+                "summary": "Obtener tesorero por ID",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"$ref": "#/components/responses/TesoreroResponse"},
+                    "404": {"$ref": "#/components/responses/NotFound"}
+                }
+            },
+            "put": {
+                "tags": ["Tesoreros"],
+                "summary": "Actualizar tesorero",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "nombre_completo": {"type": "string"},
+                                    "contacto": {"type": "object"}
+                                },
+                                "required": ["nombre_completo", "contacto"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Tesorero actualizado"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            },
+            "delete": {
+                "tags": ["Tesoreros"],
+                "summary": "Eliminar tesorero",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"description": "Tesorero eliminado"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
+        },
+        "/balances": {
+            "get": {
+                "tags": ["Balances"],
+                "summary": "Obtener todos los balances",
+                "security": [{"bearerAuth": []}],
+                "responses": {
+                    "200": {
+                        "description": "Lista de balances",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"$ref": "#/components/schemas/Balance"}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Balances"],
+                "summary": "Crear nuevo balance",
+                "security": [{"bearerAuth": []}],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "descripcion": {"type": "string", "example": "Balance del Mes de Febrero"},
+                                    "debe": {"type": "number", "example": 400.50},
+                                    "haber": {"type": "number", "example": 550.30},
+                                    "fecha": {"type": "string", "format": "date","example": "2025-02-25"}
+                                },
+                                "required": ["descripcion", "debe", "haber", "fecha"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Balance creado"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
+        },
+        "/balances/{id}": {
+            "get": {
+                "tags": ["Balances"],
+                "summary": "Obtener balance por ID",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"$ref": "#/components/responses/BalanceResponse"},
+                    "404": {"$ref": "#/components/responses/NotFound"}
+                }
+            },
+            "put": {
+                "tags": ["Balances"],
+                "summary": "Actualizar balance completo",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "descripcion": {"type": "string", "example": "Balance del Mes de Marzo"},
+                                    "debe": {"type": "number", "example": 200.50},
+                                    "haber": {"type": "number", "example": 500.30},
+                                    "fecha": {"type": "string", "format": "date","example": "2024-10-25"}
+                                },
+                                "required": ["descripcion", "debe", "haber", "fecha"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {"description": "Balance actualizado"},
+                    "400": {"$ref": "#/components/responses/BadRequest"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            },
+            "delete": {
+                "tags": ["Balances"],
+                "summary": "Eliminar balance",
+                "security": [{"bearerAuth": []}],
+                "parameters": [{"$ref": "#/components/parameters/IdPath"}],
+                "responses": {
+                    "200": {"description": "Balance eliminado"},
+                    "500": {"$ref": "#/components/responses/ServerError"}
+                }
+            }
         }
-
     },
     "components": {
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
                 "scheme": "bearer"
+            }
+        },
+        "schemas": {
+            "Asociado": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"},
+                    "nombre_completo": {"type": "string"},
+                    "lugar": {"type": "string"},
+                    "fecha_creacion": {"type": "string", "format": "date-time"},
+                    "fecha_modificacion": {"type": "string", "format": "date-time"}
+                }
+            },
+            "AsociadoInput": {
+                "type": "object",
+                "properties": {
+                    "nombre_completo": {"type": "string"},
+                    "lugar": {"type": "string"},
+                    "fecha_creacion": {"type": "string", "format": "date-time"},
+                    "fecha_modificacion": {"type": "string", "format": "date-time"}
+                },
+                "required": ["nombre_completo", "lugar", "fecha_creacion", "fecha_modificacion"]
+            },
+            "Categoria": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"},
+                    "nombre": {"type": "string"},
+                    "descripcion": {"type": "string"}
+                }
+            },
+            "Tesorero": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"},
+                    "nombre_completo": {"type": "string"},
+                    "contacto": {"$ref": "#/components/schemas/Contacto"}
+                }
+            },
+            "Contacto": {
+                "type": "object",
+                "properties": {
+                    "num_contacto": {"type": "string"},
+                    "correo": {"type": "string"},
+                    "lugar": {"type": "string"}
+                }
+            },
+            "Balance": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"},
+                    "descripcion": {"type": "string"},
+                    "debe": {"type": "number"},
+                    "haber": {"type": "number"},
+                    "fecha": {"type": "string", "format": "date-time"}
+                }
+            }
+        },
+        "parameters": {
+            "IdPath": {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "schema": {"type": "integer"}
+            }
+        },
+        "responses": {
+            "BadRequest": {
+                "description": "Datos inválidos o faltantes",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "Recurso no encontrado",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            },
+            "ServerError": {
+                "description": "Error interno del servidor",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {"type": "string"}
+                            }
+                        }
+                    }
+                }
+            },
+            "CreatedAsociado": {
+                "description": "Asociado creado exitosamente",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {"type": "string"},
+                                "id": {"type": "integer"}
+                            }
+                        }
+                    }
+                }
             }
         }
     }

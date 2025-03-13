@@ -22,8 +22,9 @@ class TesoreroController
     }
 
     // Obtener un tesorero por ID
-    public function getById($id)
+    public function getById($authData, $id)
     {
+        $id = intval($id);
         $tesorero = $this->tesoreroModel->getById($id);
         if ($tesorero) {
             Response::json($tesorero);
@@ -80,8 +81,9 @@ class TesoreroController
     }
 
     // Eliminar tesorero
-    public function delete($id)
+    public function delete($authData, $id)
     {
+        $id = intval($id);
         $result = $this->tesoreroModel->delete($id);
 
         if ($result) {

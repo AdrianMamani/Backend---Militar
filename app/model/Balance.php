@@ -13,7 +13,7 @@ class Balance
     public function getAll()
     {
 
-        $query = "SELECT * FROM Balance";
+        $query = "SELECT * FROM balances";
         $result = $this->db->query($query);
 
         $balances = [];
@@ -27,7 +27,7 @@ class Balance
 
     public function getBalanceById(int $id)
     {
-        $query = "SELECT * FROM Balance WHERE id_balance = ?";
+        $query = "SELECT * FROM balances WHERE id_balance = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -40,7 +40,7 @@ class Balance
 
     public function create($descripcion, $debe, $haber, $fecha)
     {
-        $query = "INSERT INTO Balance (descripcion, debe, haber, fecha) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO balances (descripcion, debe, haber, fecha) VALUES (?, ?, ?, ?)";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("sdds", $descripcion, $debe, $haber, $fecha);
 
@@ -52,7 +52,7 @@ class Balance
 
     public function update(int $id, $descripcion, $debe, $haber, $fecha)
     {
-        $query = "UPDATE Balance SET descripcion = ?, debe = ?, haber = ?, fecha = ? WHERE id_balance = ?";
+        $query = "UPDATE balances SET descripcion = ?, debe = ?, haber = ?, fecha = ? WHERE id_balance = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("sddsi", $descripcion, $debe, $haber, $fecha, $id);
 
@@ -64,7 +64,7 @@ class Balance
 
     public function delete(int $id)
     {
-        $query = "DELETE FROM Balance WHERE id_balance = ?";
+        $query = "DELETE FROM balances WHERE id_balance = ?";
         $stmt = $this->db->prepare($query);
         $stmt->bind_param("i", $id);
 

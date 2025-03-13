@@ -33,7 +33,7 @@ class AsociadoController
             echo json_encode(["error" => "Asociado no encontrado"]);
         }
     }
-
+    // POST /asociados
     public function create()
     {
         $data = json_decode(file_get_contents("php://input"), true);
@@ -58,7 +58,7 @@ class AsociadoController
         }
     }
 
-    // PUT/PATCH /asociados/{id}
+    // PUT /asociados/{id}
     public function update($authData, $id)
     {
         $id = intval($id);
@@ -85,7 +85,7 @@ class AsociadoController
             echo json_encode(["error" => "Error al actualizar el asociado"]);
         }
     }
-
+    // DELETE /asociados/{id}
     public function delete($authData, $id)
     {
         $id = intval($id);
@@ -101,23 +101,4 @@ class AsociadoController
         }
     }
 
-    // POST /asociados/associate
-    // Para asociar una aportación a un asociado
-    public function associateAportacion()
-    {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!isset($data['id_asociado'], $data['id_aportacion'])) {
-            http_response_code(400);
-            echo json_encode(["error" => "Faltan datos requeridos para la asociación"]);
-            return;
-        }
-        $success = $this->asociadoModel->associateAportacion($data['id_asociado'], $data['id_aportacion']);
-        header("Content-Type: application/json");
-        if ($success) {
-            echo json_encode(["message" => "Aportación asociada al asociado"]);
-        } else {
-            http_response_code(500);
-            echo json_encode(["error" => "Error al asociar la aportación"]);
-        }
-    }
 }

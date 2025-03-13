@@ -229,7 +229,7 @@ CREATE TABLE pago (
 ) ENGINE=InnoDB;
 
 -- Tabla: Balance
-CREATE TABLE balance (
+CREATE TABLE balances (
     id_balance INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(255) NOT NULL,
     debe DECIMAL(12,2) NOT NULL,
@@ -244,7 +244,7 @@ CREATE TABLE asociado_deuda (
   fecha varchar(100) NOT NULL,
   monto decimal(10,2) NOT NULL,
   id_asociado int(11) NOT NULL,
-  FOREIGN KEY (id_asociado) REFERENCES asociado(id_asociado)
+  FOREIGN KEY (id_asociado) REFERENCES asociado(id_asociado) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 

@@ -180,13 +180,19 @@ $router->addRoute('DELETE', '/balances/:id', [$balanceController, 'delete'], tru
 // Rutas para Tesorero
 // -----------------------
 $tesoreroController = new TesoreroController($db);
-$router->addRoute('POST', '/tesorero', [$tesoreroController, 'create'], true);
-$router->addRoute('GET', '/tesorero', [$tesoreroController, 'getAll'], true);
+$router->addRoute('POST', '/tesoreros', [$tesoreroController, 'create'], true);
+$router->addRoute('GET', '/tesoreros', [$tesoreroController, 'getAll'], true);
+$router->addRoute('GET', '/tesoreros/:id', [$tesoreroController, 'getById'], true);
+$router->addRoute('PUT', '/tesoreros/:id', [$tesoreroController, 'update'], true);
+$router->addRoute('DELETE', '/tesoreros/:id', [$tesoreroController, 'delete'], true);
 // -----------------------
 // Rutas para Categoria
 // -----------------------
-$router->addRoute('GET', '/categoria', [$categoriaController, 'getAll'], true);
-$router->addRoute('POST', '/categoria', [$categoriaController, 'create'], true);
+$router->addRoute('GET', '/categorias', [$categoriaController, 'getAll'], true);
+$router->addRoute('POST', '/categorias', [$categoriaController, 'create'], true);
+$router->addRoute('GET', '/categorias/:id', [$categoriaController, 'getById'], true);
+$router->addRoute('PUT', '/categorias/:id', [$categoriaController, 'update'], true);
+$router->addRoute('DELETE', '/categorias/:id', [$categoriaController, 'delete'], true);
 
 // -----------------------
 // Ruta de InMemoriam
