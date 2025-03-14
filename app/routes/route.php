@@ -48,7 +48,7 @@ $categoriaController  = new CategoriaController($db);
 $inMemoriamController = new InMemoriamController($db);
 $interfazController = new InterfazController($db);
 $deudasController = new DeudaController($db);
-
+$aportacionController = new AportacionController($db);
 
 // -----------------------
 // Rutas para Authenticacion
@@ -134,7 +134,6 @@ $router->addRoute('DELETE', '/miembros/logros/:idLogro/:idMiembro', [$miembrosLo
 // -----------------------
 // Rutas para Aportación
 // -----------------------
-$aportacionController = new AportacionController($db);
 $router->addRoute('GET', '/aportaciones', [$aportacionController, 'getAll'],true);
 $router->addRoute('GET', '/aportaciones/:id', [$aportacionController, 'getById'],true);
 $router->addRoute('POST', '/aportaciones', [$aportacionController, 'create'],true);
@@ -146,7 +145,6 @@ $router->addRoute('DELETE', '/aportaciones/:id', [$aportacionController, 'delete
 // -----------------------
 // Rutas para Deudas
 // -----------------------
-$aportacionController = new AportacionController($db);
 $router->addRoute('GET', '/deudas', [$deudasController, 'getAll'],true);
 $router->addRoute('POST', '/deudas', [$deudasController, 'create'],true);
 $router->addRoute('GET', '/deudas/:id', [$deudasController, 'getById'],true);

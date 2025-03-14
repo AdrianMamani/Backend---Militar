@@ -11,7 +11,7 @@ class Aportacion
     }
 
     public function getAll(): array {
-        $query = "SELECT * FROM vista_aportaciones";
+        $query = "SELECT * FROM listarAportaciones";
         $result = $this->db->query($query);
 
         $aportaciones = [];
