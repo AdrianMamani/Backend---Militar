@@ -1,196 +1,135 @@
 <?php
-require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../model/InMemoriam.php';
+require_once __DIR__ . '/../utils/Response.php';
 
-/**
- * Controlador para gestionar registros en la tabla InMemoriam.
- */
 class InMemoriamController
 {
-    /**
-     * Instancia del modelo InMemoriam.
-     * @var InMemoriam
-     */
-    private $inMemoriam;
+    private $model;
 
-     /**
-     * Constructor de la clase.
-     */
-    public function __construct()
+    public function __construct(Database $db)
     {
-        $db = new Database();
-        $this->inMemoriam = new InMemoriam($db);
+        $this->model = new InMemoriam($db);
     }
 
-    /*
-    public function handleRequest()
+    // Obtener todos los registros con logros e imágenes
+    public function getAll()
     {
-        $method = $_SERVER['REQUEST_METHOD'];
+        $data = $this->model->getData();
+        
+        if (empty($data)) {
+            http_response_code(404);
+            echo json_encode(["message" => "No se encontraron registros en InMemoriam."]);
+            return;
+        }
 
-        switch ($method) {
-            case 'GET':
-                $this->get();
-                break;
-            case 'POST':
-                $this->post();
-                break;
-            case 'PUT':
-                $this->put();
-                break;
-            case 'DELETE':
-                $this->delete();
-                break;
-            default:
-                http_response_code(405);
-                echo json_encode(["error" => "Método no permitido"]);
-        }
-    }
-    private function get()
-    {
-        if (isset($_GET['id'])) {
-            $id = intval($_GET['id']);
-            $data = $this->inMemoriam->getById($id);
-        } else {
-            $data = $this->inMemoriam->getAll();
-        }
+        http_response_code(200);
         echo json_encode($data);
     }
-  */
 
-    /**
-     * Lista todos los registros de InMemoriam.
-     * 
-     * @return void
-     */
-    public function listAll()
+    // Obtener un registro por ID con logros e imágenes
+    public function getById($id)
     {
-        $inMemoriams = $this->inMemoriam->getAll();
-
-        if ($inMemoriams == null) {
-            echo "La tabla InMemoriam no cuenta con Registros";
+        if (!is_numeric($id)) {
+            http_response_code(400);
+            echo json_encode(["error" => "ID inválido."]);
+            return;
         }
-        Response::json($inMemoriams);
+
+        $data = $this->model->getById($id);
+
+        if (empty($data)) {
+            http_response_code(404);
+            echo json_encode(["message" => "Registro no encontrado."]);
+            return;
+        }
+
+        http_response_code(200);
+        echo json_encode($data);
     }
 
-    /**
-     * Crea un nuevo registro en InMemoriam.
-     * 
-     * @return void
-     */
-    private function post()
+    // Agregar un nuevo registro
+    public function create()
     {
-        // Validación de datos
-        if (!isset($_POST['nombre_miembro'], $_POST['fecha_fallecimiento'], $_POST['descripcion'])) {
-            echo json_encode(["error" => "Faltan datos requeridos"]);
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        if (!isset($data['id_miembro'], $data['fecha_fallecimiento'], $data['descripcion'])) {
             http_response_code(400);
-            exit;
+            echo json_encode(["error" => "Datos incompletos."]);
+            return;
         }
 
-        $nombre_miembro = $_POST['nombre_miembro'];
-        $fecha_fallecimiento = $_POST['fecha_fallecimiento'];
-        $descripcion = $_POST['descripcion'];
-        $logros = isset($_POST['logros']) ? json_decode($_POST['logros'], true) : [];
+        $result = $this->model->postData($data['id_miembro'], $data['fecha_fallecimiento'], $data['descripcion']);
 
-        // Manejo de imagen
-        $imagenRuta = null;
-        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/../../galeria/';
-
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            $imagenNombre = time() . '-' . basename($_FILES['imagen']['name']);
-            $imagenRutaCompleta = $uploadDir . $imagenNombre;
-
-            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $imagenRutaCompleta)) {
-                $imagenRuta = "/galeria/" . $imagenNombre;
-            } else {
-                echo json_encode(["error" => "Error al mover la imagen"]);
-                http_response_code(500);
-                exit;
-            }
-        }
-        // Creación del registro
-        $result = $this->inMemoriam->create($nombre_miembro, $fecha_fallecimiento, $descripcion, $imagenRuta, $logros);
-        if ($result) {
-            echo json_encode([
-                "success" => true,
-                "message" => "Registro creado exitosamente",
-                "data" => [
-                    "nombre_miembro" => $nombre_miembro,
-                    "fecha_fallecimiento" => $fecha_fallecimiento,
-                    "descripcion" => $descripcion,
-                    "imagen" => $imagenRuta,
-                    "logros" => $logros
-                ]
-            ]);
-            exit;
-        } else {
-            echo json_encode(["error" => "No se pudo crear el registro"]);
+        if (!$result) {
             http_response_code(500);
+            echo json_encode(["error" => "Error al insertar el registro."]);
+            return;
         }
+
+        http_response_code(201);
+        echo json_encode(["message" => "Registro agregado con éxito."]);
     }
 
-    /**
-     * Actualiza un registro en InMemoriam.
-     * 
-     * @return void
-     */
-    private function put()
+    // Actualizar un registro
+    public function update($id)
     {
-        $input = json_decode(file_get_contents("php://input"), true);
-        if (!$input || !isset($input['id'], $input['nombre_miembro'], $input['fecha_fallecimiento'], $input['descripcion'], $input['imagen'])) {
-            echo json_encode(["error" => "Faltan datos requeridos"]);
+        if (!is_numeric($id)) {
             http_response_code(400);
-            exit;
+            echo json_encode(["error" => "ID inválido."]);
+            return;
         }
 
-        $id = intval($input['id']);
-        $nombre_miembro = $input['nombre_miembro'];
-        $fecha_fallecimiento = $input['fecha_fallecimiento'];
-        $descripcion = $input['descripcion'];
-        $imagen = $input['imagen'];
+        $data = json_decode(file_get_contents("php://input"), true);
 
-        $result = $this->inMemoriam->update($id, $nombre_miembro, $fecha_fallecimiento, $descripcion, $imagen);
-        if ($result) {
-            echo json_encode([
-                "success" => true,
-                "message" => "Registro actualizado exitosamente",
-            ]);
-        } else {
-            echo json_encode([
-                "success" => false,
-                "message" => "Error al actualizar el registro",
-            ]);
-        }
-        exit;
-    }
-
-    /**
-     * Elimina un registro de InMemoriam.
-     * 
-     * @return void
-     */
-    private function delete()
-    {
-        $input = json_decode(file_get_contents("php://input"), true);
-        if (!$input || !isset($input['id'])) {
-            echo json_encode(["error" => "ID requerido"]);
+        if (!isset($data['fecha_fallecimiento'], $data['descripcion'])) {
             http_response_code(400);
-            exit;
+            echo json_encode(["error" => "Datos incompletos."]);
+            return;
         }
 
-        $id = intval($input['id']);
-        $result = $this->inMemoriam->delete($id);
-        if ($result) {
-            echo json_encode([
-                "success" => true,
-                "message" => "Registro eliminado correctamente",
-            ]);
-        } else {
-            echo json_encode(["error" => "No se pudo eliminar el registro"]);
+        $result = $this->model->updateData($id, $data['fecha_fallecimiento'], $data['descripcion']);
+
+        if ($result === null) {
+            http_response_code(404);
+            echo json_encode(["error" => "No se encontró el registro para actualizar."]);
+            return;
+        }
+
+        if (!$result) {
             http_response_code(500);
+            echo json_encode(["error" => "Error al actualizar el registro."]);
+            return;
         }
+
+        http_response_code(200);
+        echo json_encode(["message" => "Registro actualizado con éxito."]);
+    }
+
+    // Eliminar un registro
+    public function delete($id)
+    {
+        if (!is_numeric($id)) {
+            http_response_code(400);
+            echo json_encode(["error" => "ID inválido."]);
+            return;
+        }
+
+        $result = $this->model->deleteData($id);
+
+        if ($result === null) {
+            http_response_code(404);
+            echo json_encode(["error" => "No se encontró el registro para eliminar."]);
+            return;
+        }
+
+        if (!$result) {
+            http_response_code(500);
+            echo json_encode(["error" => "Error al eliminar el registro."]);
+            return;
+        }
+
+        http_response_code(200);
+        echo json_encode(["message" => "Registro eliminado con éxito."]);
     }
 }
+?>

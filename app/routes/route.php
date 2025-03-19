@@ -19,6 +19,8 @@ require_once __DIR__ . '/../controller/TesoreroController.php';
 require_once __DIR__ . '/../controller/InMemoriamController.php';
 require_once __DIR__ . '/../controller/DeudaController.php';
 require_once __DIR__ . '/../controller/InterfazController.php';
+require_once __DIR__ . '/../controller/GaleriaController.php';
+
 
 
 
@@ -46,9 +48,11 @@ $miembrosLogrosController = new MiembrosLogrosController($db);
 $userController = new UserController($db);
 $categoriaController  = new CategoriaController($db);
 $inMemoriamController = new InMemoriamController($db);
-$interfazController = new InterfazController($db);
+$inMemoriamController = new InMemoriamController($db);
 $deudasController = new DeudaController($db);
 $aportacionController = new AportacionController($db);
+$galeriaController = new ControladorGaleria($db);
+
 
 // -----------------------
 // Rutas para Authenticacion
@@ -195,11 +199,11 @@ $router->addRoute('DELETE', '/categorias/:id', [$categoriaController, 'delete'],
 // -----------------------
 // Ruta de InMemoriam
 // -----------------------
-$router->addRoute('GET', '/inmemoriam', [$inMemoriamController, 'listAll'], true);
-#$router->addRoute('GET', '/inmemoriam/:id', [$inMemoriamController, 'getById'], true);
-$router->addRoute('POST', '/inmemoriam', [$inMemoriamController, 'post'], true);
-$router->addRoute('PUT', '/inmemoriam/:id', [$inMemoriamController, 'put'], true);
-$router->addRoute('DELETE', '/inmemoriam/:id', [$inMemoriamController, 'delete'], true);
+$router->addRoute('GET', '/inmemoriam', [$inMemoriamController, 'getAll'], false);
+$router->addRoute('GET', '/inmemoriam/:id', [$inMemoriamController, 'getById'], false);
+$router->addRoute('POST', '/inmemoriam', [$inMemoriamController, 'create'], false);
+$router->addRoute('PUT', '/inmemoriam/:id', [$inMemoriamController, 'put'], false);
+$router->addRoute('DELETE', '/inmemoriam/:id', [$inMemoriamController, 'delete'], false);
 
 // -----------------------
 // Ruta de Interfaz
@@ -209,3 +213,12 @@ $router->addRoute("PUT", '/actualizarInformacion', [$interfazController, 'actual
 $router->addRoute("PUT", '/actualizarGaleria', [$interfazController, 'actualizarGaleria']);
 $router->addRoute("PUT", '/actualizarInformacionVideo', [$interfazController, 'actualizarInformacionVideo']);
 $router->addRoute("PUT", '/editarImagenReferencia', [$interfazController, 'editarImagenReferencia']);
+
+// -----------------------
+// Ruta de galeria
+// -----------------------
+$router->addRoute('GET', '/galeria', [$galeriaController, 'listarGaleria'], false);
+$router->addRoute('GET', '/galeria/:id', [$galeriaController, 'obtenerPorId'], true);
+$router->addRoute('POST', '/galeria', [$galeriaController, 'agregarImagen'], false);
+$router->addRoute('PUT', '/galeria/:id', [$galeriaController, 'actualizarImagen'], false);
+$router->addRoute('DELETE', '/galeria/:id', [$galeriaController, 'eliminarImagen'], false);
